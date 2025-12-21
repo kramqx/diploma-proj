@@ -1,5 +1,3 @@
-ваще стек такой
-
 ФРОНТЕНД 
 Next.js (App Router) + React + TypeScript 
 Tailwind CSS + shadcn/ui 
