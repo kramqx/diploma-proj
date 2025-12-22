@@ -5,6 +5,15 @@ const nextConfig: NextConfig = {
   compress: true,
   poweredByHeader: false,
   typescript: { ignoreBuildErrors: false },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "sun1-26.userapi.com",
+        pathname: "/**",
+      },
+    ],
+  },
 };
 
 export default nextConfig;
