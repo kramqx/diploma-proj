@@ -7,12 +7,15 @@ import { NextAuthOptions } from "next-auth";
 
 import { prisma } from "@/shared/api/db/db";
 
-const TOKEN_MAX_AGE = 30 * 24 * 60 * 60;
+const SESSION_MAX_AGE = 30 * 24 * 60 * 60;
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   secret: process.env.NEXTAUTH_SECRET,
-
+  session: {
+    strategy: "database",
+    maxAge: SESSION_MAX_AGE,
+  },
   providers: [
     GitHubProvider({
       clientId: process.env.GITHUB_CLIENT_ID!,
@@ -54,10 +57,6 @@ export const authOptions: NextAuthOptions = {
   },
 
   debug: process.env.NODE_ENV === "development",
-
-  jwt: {
-    maxAge: TOKEN_MAX_AGE,
-  },
 
   events: {
     async signIn({ user, account }) {

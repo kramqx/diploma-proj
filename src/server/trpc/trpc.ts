@@ -1,11 +1,38 @@
-import { initTRPC } from "@trpc/server";
+import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 
 import { Context } from "@/server/trpc/context";
 
 export const t = initTRPC.context<Context>().create({
   transformer: superjson,
+  errorFormatter({ shape }) {
+    return shape;
+  },
 });
 
 export const createTRPCRouter = t.router;
+
 export const publicProcedure = t.procedure;
+
+const isAuthed = t.middleware(({ ctx, next }) => {
+  if (!ctx.session || !ctx.session.user) {
+    throw new TRPCError({ code: "UNAUTHORIZED", message: "Вы не авторизованы" });
+  }
+
+  return next({
+    ctx: {
+      session: { ...ctx.session, user: ctx.session.user },
+    },
+  });
+});
+
+export const protectedProcedure = t.procedure.use(isAuthed);
+
+const isAdmin = t.middleware(({ ctx, next }) => {
+  if (!ctx.session?.user || ctx.session.user.role !== "ADMIN") {
+    throw new TRPCError({ code: "FORBIDDEN", message: "Нужны права админа" });
+  }
+  return next({ ctx });
+});
+
+export const adminProcedure = protectedProcedure.use(isAdmin);
