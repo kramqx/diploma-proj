@@ -32,7 +32,11 @@ jobs:
           version: 10
 
       - run: pnpm install
-      - run: pnpm prisma generate
+      - name: Prisma Generate
+        run: pnpm prisma generate
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
       - run: pnpm lint
       - run: pnpm tsc --noEmit
       - run: pnpm build
