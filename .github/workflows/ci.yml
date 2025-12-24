@@ -2,66 +2,37 @@ name: CI
 
 on:
   push:
-    branches: [main, develop]
+    branches:
+      - main
+      - develop
   pull_request:
-    branches: [main, develop]
+    branches:
+      - main
+      - develop
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+      - uses: actions/checkout@v4
 
-      - name: Cache pnpm store
-        uses: actions/cache@v4
-        id: pnpm-store
+      - name: Cache Next.js build
+        uses: actions/cache@v3
         with:
-          path: ~/.pnpm-store
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          path: |
+            .next/cache
+            node_modules/.cache/turbopack
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-pnpm-
+            ${{ runner.os }}-nextjs-
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: pnpm/action-setup@v2
         with:
-          node-version: '20'
-          cache: 'pnpm'
+          version: 10
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 'latest'
-
-      - name: Debug environment
-        run: |
-          echo "=== ENV INFO ==="
-          echo "USER: $(whoami)"
-          echo "PATH=$PATH"
-          echo "--- versions ---"
-          node -v || true
-          npm -v || true
-          pnpm -v || echo "pnpm not found"
-          which pnpm || echo "which pnpm returned nothing"
-          if which pnpm >/dev/null 2>&1; then ls -l "$(which pnpm)"; fi
-          echo "=== END ENV INFO ==="
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Lint
-        run: pnpm lint
-
-      - name: TypeScript Check
-        run: pnpm tsc --noEmit
-
-      - name: Build
-        run: pnpm build
-
-      - name: Summary
-        if: always()
-        uses: actions/github-script@v7
-        with:
-          script: console.log('✅ CI passed!')
+      - run: pnpm install
+      - run: pnpm prisma generate
+      - run: pnpm lint
+      - run: pnpm tsc --noEmit
+      - run: pnpm build
