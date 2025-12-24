@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/ui/button";
 
 export default function BackButton() {
   const router = useRouter();

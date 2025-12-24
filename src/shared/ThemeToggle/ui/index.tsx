@@ -4,10 +4,10 @@ import { useTheme } from "next-themes";
 import { Sun, Moon } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import { Button } from "@/components/ui/button";
 import { AppTooltip } from "@/shared/AppTooltip";
 import { ThemeToggleProps } from "@/shared/ThemeToggle/types";
-import { cn } from "@/lib/utils";
+import { Button } from "@/shared/ui/button";
+import { cn } from "@/shared/lib/utils";
 
 export function ThemeToggle({ className }: ThemeToggleProps) {
   const { theme, resolvedTheme, setTheme } = useTheme();
