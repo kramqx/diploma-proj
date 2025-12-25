@@ -64,6 +64,7 @@ export const authOptions: NextAuthOptions = {
       maxAge: MAGIC_LINK_MAX_AGE,
       from: process.env.SMTP_USER,
       sendVerificationRequest: async ({ identifier: email, url, provider }) => {
+        const { host } = new URL(url);
         const transporter = nodemailer.createTransport({
           host: "smtp.mail.ru",
           port: NODEMAILER_PORT,
@@ -81,8 +82,63 @@ export const authOptions: NextAuthOptions = {
           from: provider.from,
           to: email,
           subject: "Doxynix | Авторизация",
-          html: `Нам поступил запрос на авторизацию на данный адрес электронной почты, пожалуйста перейдите по следующей ссылке для завершения регистрации:
-          ${url}`,
+          html: `
+    <table width="100%" cellpadding="0" cellspacing="0" style="background:#ffffff;padding:24px 0;">
+      <tr>
+        <td align="center">
+          <table width="560" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:12px;border:1px solid #e5e5e5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#111111;">
+            <tr>
+              <td style="padding:26px 32px 10px;">
+                <h2 style="margin:0 0 14px;font-size:20px;line-height:1.4;color:#111111;">Подтверждение входа</h2>
+
+                <p style="margin:0 0 14px;font-size:15px;line-height:1.6;color:#111111;">
+                  На этот адрес был отправлен запрос на авторизацию в <strong>${host}</strong>.
+                </p>
+
+                <p style="margin:0 18px 22px 0;font-size:15px;line-height:1.6;">
+                  Нажмите кнопку ниже, чтобы завершить вход. Ссылка действует ограниченное время.
+                </p>
+
+                <p style="text-align:center;margin:26px 0;">
+                  <a
+                    href="${url}"
+                    style="
+                      display:inline-block;
+                      background:#000000;
+                      color:#ffffff;
+                      text-decoration:none;
+                      padding:12px 22px;
+                      border-radius:8px;
+                      font-weight:600;
+                      font-size:14px;
+                    "
+                  >
+                    Войти
+                  </a>
+                </p>
+
+                <p style="margin:22px 0 10px;font-size:13px;color:#555555;line-height:1.6;">
+                  Если кнопка не работает, скопируйте ссылку и вставьте в адресную строку браузера:
+                </p>
+
+                <p style="word-break:break-all;font-size:13px;color:#111111;margin:0 0 24px;">
+                  ${url}
+                </p>
+
+                <p style="font-size:12px;color:#888888;line-height:1.6;margin:0;">
+                  Если вы не запрашивали вход — просто проигнорируйте это письмо.
+                </p>
+              </td>
+            </tr>
+          </table>
+
+          <p style="color:#888888;font-size:12px;margin:14px 0 0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+            © ${host}
+          </p>
+        </td>
+      </tr>
+    </table>
+  `,
         });
       },
     }),
