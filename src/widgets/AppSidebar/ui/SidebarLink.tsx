@@ -14,7 +14,7 @@ export function SidebarLink({ href, title, icon: Icon }: MenuItem) {
   return (
     <SidebarMenuButton
       className={cn(
-        "flex transition-colors duration-300",
+        "flex",
         isActive
           ? "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground active:bg-primary active:text-primary-foreground"
           : "hover:bg-primary hover:text-primary-foreground active:bg-primary active:text-primary-foreground"
