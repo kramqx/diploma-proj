@@ -1,4 +1,3 @@
-import crypto from "crypto";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { getServerSession, type NextAuthOptions } from "next-auth";
 import EmailProvider from "next-auth/providers/email";
@@ -12,8 +11,10 @@ import nodemailer from "nodemailer";
 
 import { prisma } from "@/shared/api/db/db";
 
-const SESSION_MAX_AGE = 30 * 24 * 60 * 60;
-const SESSION_UPDATE_AGE = 24 * 60 * 60;
+const SESSION_MAX_AGE = 30 * 24 * 60 * 60; // 30 дней
+const SESSION_UPDATE_AGE = 24 * 60 * 60; // сутки
+const MAGIC_LINK_MAX_AGE = 10 * 60; // 10 минут
+const NODEMAILER_PORT = 465;
 // const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const authOptions: NextAuthOptions = {
@@ -26,6 +27,7 @@ export const authOptions: NextAuthOptions = {
   },
   providers: [
     // EmailProvider({
+    //   maxAge: MAGIC_LINK_MAX_AGE,
     //   from: "no-reply@doxynix.com",
     //   sendVerificationRequest: async ({ identifier, url, provider }) => {
     //     const user = await prisma.user.findUnique({
@@ -59,11 +61,12 @@ export const authOptions: NextAuthOptions = {
     // }),
 
     EmailProvider({
+      maxAge: MAGIC_LINK_MAX_AGE,
       from: process.env.SMTP_USER,
       sendVerificationRequest: async ({ identifier: email, url, provider }) => {
         const transporter = nodemailer.createTransport({
           host: "smtp.mail.ru",
-          port: 465,
+          port: NODEMAILER_PORT,
           secure: true,
           auth: {
             user: process.env.SMTP_USER,
@@ -118,8 +121,8 @@ export const authOptions: NextAuthOptions = {
   pages: {
     signIn: "/auth",
     signOut: "/",
-    error: "/auth/error",
-    newUser: "/welcome",
+    error: "/auth/error", // реализовать страницу /auth/error
+    newUser: "/welcome", // реализовать страницу /welcome
   },
 
   debug: process.env.NODE_ENV === "development",
@@ -132,15 +135,15 @@ export const authOptions: NextAuthOptions = {
       console.log(`User ${session?.user?.email} signed out`);
     },
     async createUser({ user }) {
-      if (user.name == null) {
-        const uniqueName = `user-${crypto.randomBytes(3).toString("hex")}`;
+      if (user.name == null && user.email != null) {
+        const baseName = user.email.split("@")[0];
+        const finalName = `${baseName}`;
+
         await prisma.user.update({
           where: { id: Number(user.id) },
-          data: { name: uniqueName },
+          data: { name: finalName },
         });
-        console.log(`New user created: ${user.email} with name ${uniqueName}`);
-      } else {
-        console.log(`New user created: ${user.email} with name ${user.name}`);
+        console.log(`New user created: ${user.email} with name ${finalName}`);
       }
     },
     async updateUser({ user }) {
