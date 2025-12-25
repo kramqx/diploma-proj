@@ -1,8 +1,15 @@
+import { redirect } from "next/navigation";
+
+import { getServerAuthSession } from "@/shared/api/auth/authOptions";
 import { SidebarInset, SidebarProvider } from "@/shared/ui/sidebar";
 import { AppSidebar } from "@/widgets/AppSidebar";
 import { SidebarToggle } from "@/widgets/AppSidebar/ui/SidebarToggle";
 
-export default function PrivateLayout({ children }: { children: React.ReactNode }) {
+export default async function PrivateLayout({ children }: { children: React.ReactNode }) {
+  const session = await getServerAuthSession();
+
+  if (!session) redirect("/auth");
+
   return (
     <SidebarProvider>
       <AppSidebar />
