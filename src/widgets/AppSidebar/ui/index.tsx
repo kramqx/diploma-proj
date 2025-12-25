@@ -62,12 +62,7 @@ export function AppSidebar() {
           ) : (
             <CircleUserRound size={36} />
           )}
-          <p
-            className={cn(
-              "truncate duration-100",
-              state === "collapsed" ? "opacity-0" : "opacity-100"
-            )}
-          >
+          <p className={cn("truncate", state === "collapsed" ? "opacity-0" : "opacity-100")}>
             {user?.name}
           </p>
         </div>

@@ -13,7 +13,7 @@ export default async function PrivateLayout({ children }: { children: React.Reac
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset className="transition-all duration-300">
+      <SidebarInset>
         <div className="flex flex-col gap-4 p-4">
           <SidebarToggle />
           {children}

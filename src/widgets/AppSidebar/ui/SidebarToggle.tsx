@@ -8,7 +8,7 @@ export function SidebarToggle() {
 
   return (
     <AppTooltip content={state === "expanded" ? "Свернуть" : "Развернуть"}>
-      <SidebarTrigger className={"hover:cursor-pointer"} variant="default" />
+      <SidebarTrigger className="hover:cursor-pointer" variant="default" />
     </AppTooltip>
   );
 }
