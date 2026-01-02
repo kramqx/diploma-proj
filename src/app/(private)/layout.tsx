@@ -1,24 +1,39 @@
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { getServerAuthSession } from "@/shared/api/auth/authOptions";
-import { SidebarInset, SidebarProvider } from "@/shared/ui/sidebar";
+import { SidebarProvider } from "@/shared/ui/sidebar";
+import { CreateRepoDialog } from "@/features/repo/ui/CreateRepoDialog";
+import { AppFooter } from "@/widgets/AppFooter/ui";
+import { AppHeader } from "@/widgets/AppHeader";
 import { AppSidebar } from "@/widgets/AppSidebar";
-import { SidebarToggle } from "@/widgets/AppSidebar/ui/SidebarToggle";
 
 export default async function PrivateLayout({ children }: { children: React.ReactNode }) {
   const session = await getServerAuthSession();
-
   if (!session) redirect("/auth");
 
+  const cookieStore = await cookies();
+  const defaultOpen = cookieStore.get("sidebar_state")?.value === "true";
+
   return (
-    <SidebarProvider>
-      <AppSidebar />
-      <SidebarInset>
-        <div className="flex flex-col gap-4 p-4">
-          <SidebarToggle />
-          {children}
+    <>
+      <SidebarProvider
+        defaultOpen={defaultOpen}
+        className="flex h-screen w-full flex-col overflow-hidden"
+      >
+        <div className="bg-background z-50 w-full shrink-0 border-b">
+          <AppHeader />
         </div>
-      </SidebarInset>
-    </SidebarProvider>
+
+        <div className="flex flex-1 overflow-hidden">
+          <AppSidebar />
+          <div className="bg-background relative flex flex-1 flex-col overflow-x-hidden overflow-y-auto">
+            <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col p-6">{children}</main>
+            <AppFooter />
+          </div>
+        </div>
+      </SidebarProvider>
+      <CreateRepoDialog />
+    </>
   );
 }
