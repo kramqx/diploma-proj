@@ -7,10 +7,11 @@ import { useTheme } from "next-themes";
 import { cn } from "@/shared/lib/utils";
 import { AppTooltip } from "@/shared/ui/AppTooltip";
 import { Button } from "@/shared/ui/button";
+import { Skeleton } from "@/shared/ui/skeleton";
 import { ThemeToggleProps } from "@/shared/ui/ThemeToggle/types";
 
 export function ThemeToggle({ className }: ThemeToggleProps) {
-  const { theme, resolvedTheme, setTheme } = useTheme();
+  const { resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -18,20 +19,21 @@ export function ThemeToggle({ className }: ThemeToggleProps) {
     setMounted(true);
   }, []);
 
-  if (!mounted) return null;
+  if (!mounted) {
+    return <Skeleton className="h-9 w-9 rounded-md" />;
+  }
 
-  const currentTheme = resolvedTheme ?? theme ?? "light";
+  const isDark = resolvedTheme === "dark";
 
   return (
-    <AppTooltip
-      content={cn(currentTheme === "dark" ? "Сменить тему на светлую" : "Сменить тему на темную")}
-    >
+    <AppTooltip content={isDark ? "Светлая тема" : "Темная тема"}>
       <Button
-        className={cn(className, "hover:cursor-pointer")}
-        variant="default"
-        onClick={() => setTheme(currentTheme === "dark" ? "light" : "dark")}
+        className={cn(className)}
+        variant="ghost"
+        size="icon"
+        onClick={() => setTheme(isDark ? "light" : "dark")}
       >
-        {currentTheme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+        {isDark ? <Moon className="h-4.5" /> : <Sun className="h-4.5" />}
       </Button>
     </AppTooltip>
   );

@@ -1,14 +1,18 @@
 import Link from "next/link";
 
-import { LogoProps } from "@/shared/ui/Logo/types";
+import { InnerLogoProps, LogoProps } from "@/shared/ui/Logo/types";
 
-export function Logo({ collapsed, ...props }: LogoProps) {
-  return collapsed === true ? <CollapsedLogo {...props} /> : <ExpandedLogo {...props} />;
+export function Logo({ collapsed, isInteractive = true, ...props }: LogoProps) {
+  return collapsed ? (
+    <CollapsedLogo isInteractive={isInteractive} {...props} />
+  ) : (
+    <ExpandedLogo isInteractive={isInteractive} {...props} />
+  );
 }
 
-function CollapsedLogo(props: React.SVGProps<SVGSVGElement>) {
+function CollapsedLogo({ isInteractive, ...props }: InnerLogoProps) {
   return (
-    <Link href="/" className="hover:text-logo-hover w-full hover:cursor-pointer">
+    <LogoLink isInteractive={isInteractive}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="100%"
@@ -22,13 +26,13 @@ function CollapsedLogo(props: React.SVGProps<SVGSVGElement>) {
           className="transition-colors"
         />
       </svg>
-    </Link>
+    </LogoLink>
   );
 }
 
-function ExpandedLogo(props: React.SVGProps<SVGSVGElement>) {
+function ExpandedLogo({ isInteractive, ...props }: InnerLogoProps) {
   return (
-    <Link href="/" className="hover:text-logo-hover w-full hover:cursor-pointer">
+    <LogoLink isInteractive={isInteractive}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="100%"
@@ -72,6 +76,24 @@ function ExpandedLogo(props: React.SVGProps<SVGSVGElement>) {
           className="transition-colors"
         />
       </svg>
+    </LogoLink>
+  );
+}
+
+function LogoLink({
+  isInteractive,
+  children,
+}: {
+  isInteractive?: boolean;
+  children: React.ReactNode;
+}) {
+  if (!isInteractive) {
+    return <>{children}</>;
+  }
+
+  return (
+    <Link href="/" className="hover:text-muted-foreground cursor-pointer">
+      {children}
     </Link>
   );
 }
