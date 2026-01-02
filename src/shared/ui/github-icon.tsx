@@ -1,6 +1,11 @@
-export default function GitHubIcon() {
+interface IconProps {
+  className?: string;
+}
+
+export default function GitHubIcon({ className }: IconProps) {
   return (
     <svg
+      className={className}
       stroke="currentColor"
       fill="currentColor"
       strokeWidth="0"
