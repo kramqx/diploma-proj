@@ -2,28 +2,35 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { SquareArrowOutUpRight } from "lucide-react";
 
 import { cn } from "@/shared/lib/utils";
 import { SidebarMenuButton } from "@/shared/ui/sidebar";
 import { MenuItem } from "@/widgets/AppSidebar/types";
 
-export function SidebarLink({ href, title, icon: Icon }: MenuItem) {
+export function SidebarLink({ href, title, icon: Icon, isBlank }: MenuItem) {
   const pathname = usePathname();
-  const isActive = pathname === href;
+  const blank = isBlank === true;
+  const isActive = !blank && pathname === href;
 
   return (
     <SidebarMenuButton
       className={cn(
-        "flex",
+        "flex truncate",
         isActive
-          ? "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground active:bg-primary active:text-primary-foreground"
-          : "hover:bg-primary hover:text-primary-foreground active:bg-primary active:text-primary-foreground"
+          ? "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground active:bg-primary active:text-primary-foreground font-bold"
+          : "hover:bg-primary text-muted-foreground hover:text-primary-foreground active:bg-primary active:text-primary-foreground"
       )}
       asChild
     >
-      <Link href={href}>
+      <Link
+        href={href}
+        target={blank ? "_blank" : undefined}
+        rel={blank ? "noopener noreferrer" : undefined}
+      >
         {Icon && <Icon />}
         {title}
+        {blank && <SquareArrowOutUpRight className="ml-auto" />}
       </Link>
     </SidebarMenuButton>
   );
