@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -8,7 +9,7 @@ import { AppFooter } from "@/widgets/AppFooter";
 import { AppHeader } from "@/widgets/AppHeader";
 import { AppSidebar } from "@/widgets/AppSidebar";
 
-export default async function PrivateLayout({ children }: { children: React.ReactNode }) {
+export default async function PrivateLayout({ children }: { children: ReactNode }) {
   const session = await getServerAuthSession();
   if (!session) redirect("/auth");
 
@@ -21,14 +22,14 @@ export default async function PrivateLayout({ children }: { children: React.Reac
         defaultOpen={defaultOpen}
         className="flex h-screen w-full flex-col overflow-hidden"
       >
-        <div className="bg-background z-50 w-full shrink-0 border-b">
+        <div className="z-50 w-full shrink-0 border-b">
           <AppHeader />
         </div>
 
         <div className="flex flex-1 overflow-hidden">
           <AppSidebar />
-          <div className="bg-background relative flex flex-1 flex-col overflow-x-hidden overflow-y-auto">
-            <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col p-6">{children}</main>
+          <div className="relative flex flex-1 flex-col overflow-x-hidden overflow-y-auto">
+            <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col p-4">{children}</main>
             <AppFooter />
           </div>
         </div>

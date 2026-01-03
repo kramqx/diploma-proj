@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: "Панель управления",
 };
 
-export default async function Dashboard() {
+export default function Dashboard() {
   return (
     <div className="mx-auto w-full">
       <div className="flex flex-col gap-6">

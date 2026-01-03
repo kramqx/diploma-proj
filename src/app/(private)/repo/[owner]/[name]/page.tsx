@@ -1,4 +1,6 @@
-import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+
+import { api } from "@/server/trpc/server";
 
 type Props = {
   params: Promise<{
@@ -7,25 +9,38 @@ type Props = {
   }>;
 };
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params }: Props) {
   const { owner, name } = await params;
 
   return {
     title: `${owner}/${name}`,
-    description: `Анализ и документация для репозитория ${owner}/${name}`,
   };
 }
 
-export default async function RepoOwnerName({ params }: Props) {
+export default async function RepoOwnerNamePage({ params }: Props) {
   const { owner, name } = await params;
+
+  const repo = await (
+    await api()
+  ).repo.getByName({
+    owner,
+    name,
+  });
+
+  if (!repo) {
+    notFound();
+  }
 
   return (
     <div className="space-y-4">
       <h1 className="flex items-center text-2xl font-bold">
-        {owner} / {name}
+        {repo.owner} / {repo.name}
       </h1>
+      <p className="text-muted-foreground">{repo.description}</p>
+
       <div>
-        Тут будет контент для репозитория <strong>{name}</strong> от <strong>{owner}</strong>
+        ID: {repo.id} <br />
+        Статус: {repo.status}
       </div>
     </div>
   );
