@@ -1,6 +1,8 @@
+import { ReactNode } from "react";
+
 import { AuthBackground } from "@/features/auth";
 
-export default function AuthLayout({ children }: { children: React.ReactNode }) {
+export default function AuthLayout({ children }: { children: ReactNode }) {
   return (
     <div className="relative flex flex-1 flex-col items-center justify-center p-4">
       <AuthBackground />

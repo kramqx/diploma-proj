@@ -8,7 +8,7 @@ export function AppFooter() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-background sticky bottom-0 flex items-center justify-center border-t py-3">
+    <footer className="sticky bottom-0 flex items-center justify-center border-t py-3">
       <div className="container flex flex-col items-center justify-between gap-4 md:flex-row md:px-8">
         <div className="flex items-center gap-4">
           <p className="text-muted-foreground text-center text-xs">
