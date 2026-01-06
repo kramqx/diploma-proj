@@ -61,6 +61,10 @@ jobs:
       - name: Linting
         run: pnpm lint
 
+      - name: Prisma Generate
+        run: pnpm prisma generate
+
+
       - name: Type Checking
         run: pnpm tsc --noEmit
 
@@ -77,9 +81,6 @@ jobs:
 
       - name: Security audit
         run: pnpm audit --audit-level=high
-
-      - name: Prisma Generate
-        run: pnpm prisma generate
 
       - name: Check Code Duplication (JSCPD)
         run: pnpm run dup
