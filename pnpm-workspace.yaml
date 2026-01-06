@@ -10,6 +10,7 @@ ignoredBuiltDependencies:
   - unrs-resolver
 
 onlyBuiltDependencies:
+  - msgpackr-extract
   - nexus-prisma
 
 overrides:
