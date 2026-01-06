@@ -7,7 +7,7 @@ export function AuthBackground() {
         width="100%"
         height="100%"
         preserveAspectRatio="none"
-        // viewBox="0 0 1920 1080"
+        viewBox="0 0 1920 1080"
       >
         <g mask='url("#SvgjsMask1076")' fill="none">
           <rect

@@ -1,5 +1,6 @@
 "use client";
 
+import type { Route } from "next";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SlashIcon } from "lucide-react";
@@ -27,7 +28,7 @@ export function AppHeader() {
   const segments = pathname.split("/").filter(Boolean);
 
   return (
-    <header className="flex h-full items-center justify-between p-4">
+    <header className="bg-background flex h-full items-center justify-between p-4">
       <div className="flex items-center gap-2">
         <AppTooltip content={cn(state === "expanded" ? "Скрыть" : "Раскрыть")}>
           <SidebarToggle />
@@ -41,6 +42,8 @@ export function AppHeader() {
               const href = `/${segments.slice(0, index + 1).join("/")}`;
               const isLast = index === segments.length - 1;
 
+              const decodedSegment = decodeURIComponent(segment);
+
               return (
                 <div key={href} className="flex items-center gap-1.5">
                   <BreadcrumbSeparator>
@@ -49,11 +52,11 @@ export function AppHeader() {
 
                   <BreadcrumbItem>
                     {isLast ? (
-                      <BreadcrumbPage className="capitalize">{segment}</BreadcrumbPage>
+                      <BreadcrumbPage className="lowercase">{decodedSegment}</BreadcrumbPage>
                     ) : (
                       <BreadcrumbLink asChild>
-                        <Link href={href} className="capitalize">
-                          {segment}
+                        <Link href={href as Route} className="lowercase">
+                          {decodedSegment}
                         </Link>
                       </BreadcrumbLink>
                     )}

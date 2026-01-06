@@ -65,7 +65,7 @@ export function AuthForm() {
   async function handleSignIn(provider: string) {
     try {
       setLoadingProvider(provider);
-      await signIn(provider);
+      await signIn(provider, { callbackUrl: "/dashboard" });
     } finally {
       setLoadingProvider(null);
     }
@@ -159,7 +159,7 @@ export function AuthForm() {
               Пользовательское соглашение
             </Link>{" "}
             и{" "}
-            <Link className="underline hover:no-underline" href="/policy">
+            <Link className="underline hover:no-underline" href="/privacy">
               Политику конфиденциальности
             </Link>
           </p>
@@ -173,7 +173,9 @@ export function AuthForm() {
             : "pointer-events-none absolute inset-0 scale-95 opacity-0"
         )}
       >
-        <Mail size={100} />
+        <div className="bg-muted-foreground/10 mb-4 flex size-24 items-center justify-center rounded-full">
+          <Mail className="text-muted-foreground size-12" />
+        </div>
         <h2 className="text-xl font-bold">Проверьте почту</h2>
         <p className="text-muted-foreground">
           Мы отправили ссылку на <b className="italic">{form.getValues("email")}</b>

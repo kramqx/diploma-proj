@@ -16,12 +16,15 @@ const getCookieName = () => {
 
 export const GET = ApiReference({
   url: "/api/openapi",
-
+  title: "Doxynix API Documentation",
   theme: "deepSpace",
   layout: "modern",
   darkMode: true,
   withDefaultFonts: false,
-
+  metaData: {
+    title: "Doxynix API Documentation",
+    description: "Official Doxynix API documentation",
+  },
   baseServerURL: `${getBaseUrl()}/api/v1`,
 
   showSidebar: true,
@@ -30,10 +33,17 @@ export const GET = ApiReference({
 
   tagsSorter: "alpha",
   operationsSorter: "method",
+  customCss: `
+    .scalar-powered-by { display: none !important; }
 
+    a[href*="scalar.com"] { display: none !important; }
+
+    .sidebar-footer a { display: none !important; }
+
+    /* .sidebar-footer { display: none !important; } */
+  `,
   hideModels: false,
   defaultOpenAllTags: true,
-
   authentication: {
     preferredSecurityScheme: "cookieAuth",
     securitySchemes: {
@@ -46,7 +56,7 @@ export const GET = ApiReference({
         type: "http",
         scheme: "bearer",
         bearerFormat: "JWT",
-        description: "Используйте API Key, созданный в настройках профиля",
+        description: "Use the API Key created in your profile settings.",
       },
     },
   },

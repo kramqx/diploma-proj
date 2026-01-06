@@ -1,5 +1,6 @@
 "use client";
 
+import type { Route } from "next";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Status, Visibility } from "@prisma/client";
 import { X } from "lucide-react";
@@ -11,20 +12,29 @@ export function RepoFilters() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const currentParams = new URLSearchParams(searchParams.toString());
+
+  if (currentParams.get("page") === "1") {
+    currentParams.delete("page");
+  }
+
+  const hasFilters = currentParams.toString().length > 0;
 
   const updateQuery = (name: string, value: string) => {
     const params = new URLSearchParams(searchParams.toString());
-    if (value === "all") {
+    if (value === "all" || (name === "sortBy" && value === "updatedAt")) {
       params.delete(name);
     } else {
       params.set(name, value);
     }
-    params.set("page", "1");
-    router.push(`${pathname}?${params.toString()}`);
+    params.delete("page");
+    router.push(`${pathname}?${params.toString()}` as Route);
   };
 
   const handleReset = () => {
-    router.push(pathname);
+    if (!hasFilters && searchParams.get("page") !== "1") return;
+
+    router.push(pathname as Route);
   };
 
   return (
@@ -74,7 +84,7 @@ export function RepoFilters() {
           </SelectContent>
         </Select>
 
-        <Button variant="outline" onClick={handleReset} className="px-2">
+        <Button disabled={!hasFilters} variant="outline" onClick={handleReset} className="px-2">
           Сбросить
           <X className="h-4 w-4" />
         </Button>

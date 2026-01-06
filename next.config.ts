@@ -1,9 +1,26 @@
 import type { NextConfig } from "next";
+import withBundleAnalyzer from "@next/bundle-analyzer";
+
+const bundleAnalyzer = withBundleAnalyzer({
+  enabled: process.env.ANALYZE === "true",
+});
 
 const nextConfig: NextConfig = {
+  cacheComponents: true, // если будут баги выключить
   reactStrictMode: true,
   compress: true,
   poweredByHeader: false,
+  compiler: {
+    removeConsole: process.env.NODE_ENV === "production" ? { exclude: ["error"] } : false,
+  },
+  logging: {
+    fetches: {
+      fullUrl: true,
+    },
+  },
+  reactCompiler: true, // аккуратно фича еще в бете
+  experimental: { typedEnv: true },
+  typedRoutes: true, 
   typescript: { ignoreBuildErrors: false },
   images: {
     remotePatterns: [
@@ -27,8 +44,13 @@ const nextConfig: NextConfig = {
         hostname: "avatars.yandex.net",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "utfs.io",
+        pathname: "/**",
+      },
     ],
   },
 };
 
-export default nextConfig;
+export default bundleAnalyzer(nextConfig);

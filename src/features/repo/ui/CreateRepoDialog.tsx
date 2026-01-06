@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import type { Route } from "next";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 
 import { trpc } from "@/shared/api/trpc";
@@ -24,13 +25,20 @@ export function CreateRepoDialog() {
   const { open, closeDialog } = useCreateRepoDialogStore();
   const [url, setUrl] = useState("");
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const utils = trpc.useUtils();
 
   const createRepo = trpc.repo.create.useMutation({
-    onSuccess: () => {
+    onSuccess: async () => {
       toast.success("Репозиторий успешно добавлен!");
       closeDialog();
       setUrl("");
+      await utils.repo.getAll.invalidate();
+      const params = new URLSearchParams(searchParams.toString());
 
+      params.delete("page");
+      router.push(`${pathname}?${params.toString()}` as Route);
       router.refresh();
     },
     onError: (error) => {

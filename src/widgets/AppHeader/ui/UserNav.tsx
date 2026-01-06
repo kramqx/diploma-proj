@@ -70,12 +70,12 @@ export function UserNav() {
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem className="cursor-pointer" asChild>
-            <Link href="/settings">
+            <Link href="/dashboard/settings">
               <User className="mr-2" /> Профиль
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem className="cursor-pointer" asChild>
-            <Link href="/settings">
+            <Link href="/dashboard/settings">
               <Settings className="mr-2" /> Настройки
             </Link>
           </DropdownMenuItem>

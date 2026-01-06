@@ -1,18 +1,18 @@
 import Link from "next/link";
 
+import { DateComp } from "@/shared/ui/DateComp";
 import GitHubIcon from "@/shared/ui/github-icon";
 import { TelegramIcon } from "@/shared/ui/telegram-icon";
 import { SystemStatus } from "@/widgets/AppFooter";
 
 export function AppFooter() {
-  const currentYear = new Date().getFullYear();
-
   return (
-    <footer className="sticky bottom-0 flex items-center justify-center border-t py-3">
+    <footer className="bg-background sticky bottom-0 flex items-center justify-center border-t py-3">
       <div className="container flex flex-col items-center justify-between gap-4 md:flex-row md:px-8">
         <div className="flex items-center gap-4">
           <p className="text-muted-foreground text-center text-xs">
-            &copy; {currentYear} Doxynix. Создано для разработчиков.
+            &copy; <DateComp isYear={true} /> Doxynix. Все права защищены. Создано для
+            разработчиков.
           </p>
           <SystemStatus />
         </div>
@@ -27,7 +27,7 @@ export function AppFooter() {
 
           <div className="border-border ml-2 flex items-center gap-4 border-l pl-6">
             <a
-              href="https://github.com/kramqx/diploma-proj"
+              href="https://github.com/doxynix/doxynix"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-foreground transition-colors"

@@ -8,7 +8,14 @@ module.exports = {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/dashboard", "/profile", "/repo", "/api"],
+        disallow: [
+          "/dashboard",
+          "/dashboard/profile",
+          "/dashboard/settings",
+          "/dashboard/repo",
+          "/dashboard/notifications",
+          "/api",
+        ],
       },
     ],
   },

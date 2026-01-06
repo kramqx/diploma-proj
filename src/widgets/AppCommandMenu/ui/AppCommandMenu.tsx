@@ -1,17 +1,9 @@
 "use client";
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import type { Route } from "next";
 import { useRouter } from "next/navigation";
-import {
-  ChevronDown,
-  CreditCard,
-  FolderGit2,
-  KeyRound,
-  LayoutGrid,
-  Search,
-  Settings,
-  User,
-} from "lucide-react";
+import { Book, ChevronDown, Search } from "lucide-react";
 import { useHotkeys } from "react-hotkeys-hook";
 import { useDebounce } from "use-debounce";
 
@@ -30,6 +22,7 @@ import {
   CommandShortcut,
 } from "@/shared/ui/command";
 import { Spinner } from "@/shared/ui/spinner";
+import { navMenu, settingsMenu } from "@/widgets/AppCommandMenu/model/menu";
 
 export function AppCommandMenu() {
   const [open, setOpen] = useState(false);
@@ -81,6 +74,12 @@ export function AppCommandMenu() {
     }
   }, [debouncedSearch]);
 
+  React.useEffect(() => {
+    if (open) {
+      setSearch("");
+    }
+  }, [open]);
+
   useNavigationHotkeys(() => setOpen(false));
 
   useHotkeys(
@@ -94,13 +93,22 @@ export function AppCommandMenu() {
 
   const navigate = (path: string) => {
     setOpen(false);
-    router.push(path);
+    router.push(path as Route);
   };
 
   const runCommand = useCallback((command: () => unknown) => {
     setOpen(false);
     command();
   }, []);
+
+  const filterItems = (items: typeof navMenu) => {
+    if (!search) return items;
+    const lowerSearch = search.toLowerCase();
+    return items.filter((item) => item.label.toLowerCase().includes(lowerSearch));
+  };
+
+  const filteredNav = filterItems(navMenu);
+  const filteredSettings = filterItems(settingsMenu);
 
   return (
     <>
@@ -118,50 +126,52 @@ export function AppCommandMenu() {
         </kbd>
       </Button>
 
-      <CommandDialog open={open} onOpenChange={setOpen}>
+      <CommandDialog open={open} onOpenChange={setOpen} shouldFilter={false}>
         <CommandInput
           value={search}
           onValueChange={setSearch}
+          isLoading={isLoading}
           placeholder="Введите команду или название репозитория..."
         />
         <CommandList>
-          <CommandEmpty>Ничего не найдено.</CommandEmpty>
+          {filteredNav.length === 0 && filteredSettings.length === 0 && (
+            <CommandEmpty>Ничего не найдено.</CommandEmpty>
+          )}
 
-          <CommandGroup heading="Навигация">
-            <CommandItem onSelect={() => runCommand(() => router.push("/dashboard"))}>
-              <LayoutGrid className="mr-2 h-4 w-4" />
-              <span>Обзор</span> <CommandShortcut>Alt+O</CommandShortcut>
-            </CommandItem>
-            <CommandItem onSelect={() => runCommand(() => router.push("/repo"))}>
-              <FolderGit2 className="mr-2 h-4 w-4" />
-              <span>Репозитории</span> <CommandShortcut>Alt+R</CommandShortcut>
-            </CommandItem>
-            <CommandItem onSelect={() => runCommand(() => router.push("/settings"))}>
-              <Settings className="mr-2 h-4 w-4" />
-              <span>Настройки</span>
-              <CommandShortcut>Alt+S</CommandShortcut>
-            </CommandItem>
-          </CommandGroup>
+          {filteredNav.length > 0 && (
+            <CommandGroup heading="Навигация">
+              {filteredNav.map((item) => (
+                <CommandItem
+                  key={item.path}
+                  value={item.label}
+                  onSelect={() => runCommand(() => router.push(item.path as Route))}
+                >
+                  <item.icon className="mr-2 h-4 w-4" />
+                  <span>{item.label}</span>
+                  {item.shortcut && <CommandShortcut>{item.shortcut}</CommandShortcut>}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          )}
 
           <CommandSeparator />
 
-          <CommandGroup heading="Прочее">
-            <CommandItem onSelect={() => runCommand(() => router.push("/settings?tab=profile"))}>
-              <User className="mr-2 h-4 w-4" />
-              <span>Профиль</span>
-              <CommandShortcut>Alt+P</CommandShortcut>
-            </CommandItem>
-            <CommandItem onSelect={() => runCommand(() => router.push("/settings?tab=billing"))}>
-              <CreditCard className="mr-2 h-4 w-4" />
-              <span>Биллинг</span>
-              <CommandShortcut>Alt+B</CommandShortcut>
-            </CommandItem>
-            <CommandItem onSelect={() => runCommand(() => router.push("/settings?tab=api-keys"))}>
-              <KeyRound className="mr-2 h-4 w-4" />
-              <span>API ключи</span>
-              <CommandShortcut>Alt+A</CommandShortcut>
-            </CommandItem>
-          </CommandGroup>
+          {filteredSettings.length > 0 && (
+            <CommandGroup heading="Прочее">
+              {filteredSettings.map((item) => (
+                <CommandItem
+                  key={item.path}
+                  value={item.label}
+                  onSelect={() => runCommand(() => router.push(item.path as Route))}
+                >
+                  <item.icon className="mr-2 h-4 w-4" />
+                  <span>{item.label}</span>
+                  {item.shortcut && <CommandShortcut>{item.shortcut}</CommandShortcut>}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          )}
+
           <CommandGroup
             heading={
               <div className="flex w-full items-center justify-between">
@@ -186,11 +196,6 @@ export function AppCommandMenu() {
               </div>
             }
           >
-            {isLoading && (
-              <div className="p-4 text-center">
-                <Spinner className="inline h-4 w-4" />
-              </div>
-            )}
             {isReposExpanded && (
               <>
                 {data?.pages
@@ -199,8 +204,9 @@ export function AppCommandMenu() {
                     <CommandItem
                       key={repo.id}
                       value={`${repo.owner}/${repo.name}`}
-                      onSelect={() => navigate(`/repo/${repo.owner}/${repo.name}`)}
+                      onSelect={() => navigate(`/dashboard/repo/${repo.owner}/${repo.name}`)}
                     >
+                      <Book />
                       <span>
                         {repo.owner}/{repo.name}
                       </span>
@@ -215,8 +221,8 @@ export function AppCommandMenu() {
             )}
           </CommandGroup>
 
-          {!isLoading && data?.pages[0]?.items.length === 0 && (
-            <div className="text-muted-foreground px-4 py-2 text-xs">Нет репозиториев</div>
+          {!isLoading && data?.pages[0]?.meta.totalCount === 0 && (
+            <div className="text-muted-foreground p-4 text-center text-xs">Нет репозиториев</div>
           )}
         </CommandList>
       </CommandDialog>

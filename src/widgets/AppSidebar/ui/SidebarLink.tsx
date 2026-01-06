@@ -1,5 +1,6 @@
 "use client";
 
+import type { Route } from "next";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SquareArrowOutUpRight } from "lucide-react";
@@ -24,7 +25,7 @@ export function SidebarLink({ href, title, icon: Icon, isBlank }: MenuItem) {
       asChild
     >
       <Link
-        href={href}
+        href={href as Route}
         target={blank ? "_blank" : undefined}
         rel={blank ? "noopener noreferrer" : undefined}
       >

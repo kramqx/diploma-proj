@@ -61,14 +61,20 @@ export async function RepoListContainer({ searchParams, config }: Props) {
   return (
     <>
       {config?.showTotalCount !== false && (
-        <div className="text-muted-foreground mb-2 text-right text-sm">
-          Всего репозиториев: {meta.totalCount}
+        <div className="text-muted-foreground my-4 text-sm">
+          <div className="text-right">
+            Показано: {meta.filteredCount} из {meta.totalCount}
+          </div>
         </div>
       )}
       <RepoList repos={items} meta={meta} />
 
       {config?.showPagination !== false && (
-        <AppPagination currentPage={meta.currentPage} totalPages={meta.totalPages} />
+        <AppPagination
+          className="mt-auto"
+          currentPage={meta.currentPage}
+          totalPages={meta.totalPages}
+        />
       )}
     </>
   );

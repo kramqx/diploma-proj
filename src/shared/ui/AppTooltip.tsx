@@ -1,20 +1,19 @@
 import { ReactNode } from "react";
 
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/shared/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/ui/tooltip";
 
 type Props = {
   children: ReactNode;
   content: ReactNode;
   delay?: number;
+  open?: boolean;
 };
 
-export function AppTooltip({ children, content, delay = 0 }: Props) {
+export function AppTooltip({ children, content, delay = 0, open }: Props) {
   return (
-    <TooltipProvider delayDuration={delay}>
-      <Tooltip>
-        <TooltipTrigger asChild>{children}</TooltipTrigger>
-        <TooltipContent>{content}</TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+    <Tooltip delayDuration={delay} open={open}>
+      <TooltipTrigger asChild>{children}</TooltipTrigger>
+      <TooltipContent>{content}</TooltipContent>
+    </Tooltip>
   );
 }

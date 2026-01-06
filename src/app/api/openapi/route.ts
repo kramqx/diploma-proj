@@ -20,7 +20,7 @@ const getCookieName = () => {
 export const GET = () => {
   try {
     const openApiDocument = generateOpenApiDocument(appRouter, {
-      title: "Doxynix API",
+      title: "Doxynix API Documentation",
       description: "Official Doxynix API documentation for developers.",
       version: "1.0.0",
       baseUrl: `${getBaseUrl()}/api/v1`,
@@ -38,7 +38,7 @@ export const GET = () => {
           scheme: "bearer",
           bearerFormat: "API Key",
           description:
-            "Используйте API Key, созданный в настройках профиля на https://doxynix.space/settings?tab=api-key",
+            "Use the API Key created in your profile settings at https://doxynix.space/settings?tab=api-key",
         },
       },
     });
