@@ -1,13 +1,14 @@
+import type { Route } from "next";
 import { useRouter } from "next/navigation";
 import { useHotkeys } from "react-hotkeys-hook";
 
 const NAV_MAP: Record<string, string> = {
   "alt+KeyO": "/dashboard",
-  "alt+KeyR": "/repo",
-  "alt+KeyS": "/settings",
-  "alt+KeyP": "/settings?tab=profile",
-  "alt+KeyB": "/settings?tab=billing",
-  "alt+KeyA": "/settings?tab=api-keys",
+  "alt+KeyR": "/dashboard/repo",
+  "alt+KeyS": "/dashboard/setting",
+  "alt+KeyP": "/dashboard/settings?tab=profile",
+  "alt+KeyB": "/dashboard/settings?tab=billing",
+  "alt+KeyA": "/dashboard/settings?tab=api-keys",
 };
 
 export function useNavigationHotkeys(onAction?: () => void) {
@@ -24,7 +25,7 @@ export function useNavigationHotkeys(onAction?: () => void) {
       if (path) {
         e.preventDefault();
         onAction?.();
-        router.push(path);
+        router.push(path as Route);
       }
     },
     {

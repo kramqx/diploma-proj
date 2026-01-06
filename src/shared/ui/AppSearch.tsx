@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useTransition } from "react";
+import type { Route } from "next";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Search } from "lucide-react";
 
@@ -40,7 +41,7 @@ export function AppSearch({ placeholder }: Props) {
 
     const handler = setTimeout(() => {
       const params = new URLSearchParams(searchParams);
-      params.set("page", "1");
+      params.delete("page");
 
       if (term) {
         params.set("search", term);
@@ -49,7 +50,7 @@ export function AppSearch({ placeholder }: Props) {
       }
 
       startTransition(() => {
-        replace(`${pathname}?${params.toString()}`, { scroll: false });
+        replace(`${pathname}?${params.toString()}` as Route, { scroll: false });
       });
     }, 300);
     return () => clearTimeout(handler);

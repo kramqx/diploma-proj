@@ -1,5 +1,3 @@
-"use client";
-
 import { ComponentType } from "react";
 
 import { cn } from "@/shared/lib/utils";
@@ -19,7 +17,7 @@ export function RepoMetric({ icon: Icon, label, tooltip, color, className }: Pro
   return (
     <AppTooltip content={tooltip}>
       <div className={cn("flex cursor-help items-center gap-1", className)}>
-        {Icon && <Icon className="h-3 w-3" {...(color != null ? { color } : {})} />}
+        {Icon && <Icon className={cn("h-3 w-3", color)} />}
         <span>{label.toLocaleString("ru-RU")}</span>
       </div>
     </AppTooltip>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import type { Route } from "next";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ChevronLeft } from "lucide-react";
 
@@ -32,15 +33,23 @@ export function AppPagination({ className, currentPage, totalPages }: Props) {
     e.preventDefault();
     setClickedButton(btn);
     startTransition(() => {
-      router.push(createPageURL(page), { scroll: false });
+      router.push(createPageURL(page) as Route, { scroll: false });
       setClickedButton("page");
     });
   };
 
   const createPageURL = (pageNumber: number | string) => {
     const params = new URLSearchParams(searchParams);
-    params.set("page", pageNumber.toString());
-    return `${pathname}?${params.toString()}`;
+    const targetPage = Number(pageNumber);
+
+    if (targetPage <= 1) {
+      params.delete("page");
+    } else {
+      params.set("page", targetPage.toString());
+    }
+
+    const str = params.toString();
+    return str ? `${pathname}?${str}` : pathname;
   };
 
   const isPrevLoading = isPending && clickedButton === "prev";
@@ -54,7 +63,7 @@ export function AppPagination({ className, currentPage, totalPages }: Props) {
       <PaginationContent>
         <PaginationItem>
           <PaginationLink
-            href={createPageURL(currentPage - 1)}
+            href={createPageURL(currentPage - 1) as Route}
             onClick={(e) => currentPage > 1 && handlePageClick(e, currentPage - 1, "prev")}
             className={cn(
               navBtnClass,
@@ -90,7 +99,7 @@ export function AppPagination({ className, currentPage, totalPages }: Props) {
           return (
             <PaginationItem key={page}>
               <PaginationLink
-                href={createPageURL(page)}
+                href={createPageURL(page) as Route}
                 isActive={page === currentPage}
                 onClick={(e) => handlePageClick(e, page, "page")}
                 className={cn("cursor-pointer", page === currentPage && "pointer-events-none")}
@@ -103,7 +112,7 @@ export function AppPagination({ className, currentPage, totalPages }: Props) {
 
         <PaginationItem>
           <PaginationLink
-            href={createPageURL(currentPage + 1)}
+            href={createPageURL(currentPage + 1) as Route}
             onClick={(e) => currentPage < totalPages && handlePageClick(e, currentPage + 1, "next")}
             className={cn(
               navBtnClass,

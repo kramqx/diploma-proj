@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
-import { BookText, ChevronDown, CircleQuestionMark } from "lucide-react";
+import { Book, BookText, ChevronDown, CircleQuestionMark } from "lucide-react";
 
 import { trpc } from "@/shared/api/trpc";
 import { cn } from "@/shared/lib/utils";
@@ -22,7 +21,7 @@ import {
 } from "@/shared/ui/sidebar";
 import { Skeleton } from "@/shared/ui/skeleton";
 import { SidebarLink } from "@/widgets/AppSidebar";
-import { menu } from "@/widgets/AppSidebar/model/menu";
+import { sidebarMenu } from "@/widgets/AppSidebar/model/sidebarMenu";
 
 export function AppSidebar() {
   const { state } = useSidebar();
@@ -37,17 +36,11 @@ export function AppSidebar() {
       }
     );
 
-  useEffect(() => {
-    if (state === "collapsed") {
-      document.querySelector("#sidebar-root")?.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  }, [state]);
-
   return (
     <Sidebar className="top-16 h-[calc(100vh-4rem)]" collapsible="icon" variant="sidebar">
       <SidebarHeader>
         <SidebarMenu>
-          {menu.map((item) => (
+          {sidebarMenu.map((item) => (
             <SidebarLink key={item.href} href={item.href} icon={item.icon} title={item.title} />
           ))}
         </SidebarMenu>
@@ -84,8 +77,9 @@ export function AppSidebar() {
                     page.items.map((repo) => (
                       <SidebarMenuItem key={repo.id}>
                         <SidebarLink
+                          icon={Book}
                           title={`${repo.owner}/${repo.name}`}
-                          href={`/repo/${repo.owner}/${repo.name}`}
+                          href={`/dashboard/repo/${repo.owner}/${repo.name}`}
                         />
                       </SidebarMenuItem>
                     ))
