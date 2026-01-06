@@ -1,0 +1,40 @@
+name: Next.js Bundle Analysis
+
+on:
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Restore next cache
+        uses: actions/cache@v4
+        with:
+          path: .next/cache
+          key: ${{ runner.os }}-next-cache-${{ hashFiles('**/pnpm-lock.yaml') }}
+
+      - name: Analyze bundle
+        run: pnpm analyze
+
+      - name: Upload analysis
+        uses: sidharthv96/next-bundle-analysis@v4
+        with:
+          build-status: ${{ job.status }}
+          token: ${{ secrets.GITHUB_TOKEN }}

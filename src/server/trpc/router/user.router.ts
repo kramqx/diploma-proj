@@ -38,7 +38,8 @@ export const userRouter = createTRPCRouter({
         where: { id },
       });
 
-      if (!user) throw new TRPCError({ code: "NOT_FOUND", message: "Пользователь не найден" });
+      if (user === null)
+        throw new TRPCError({ code: "NOT_FOUND", message: "Пользователь не найден" });
 
       return {
         user: {
@@ -53,7 +54,7 @@ export const userRouter = createTRPCRouter({
         },
       };
     }),
-  updateAvatar: protectedProcedure // опиши мету и оутпут для trpc-to-openapi
+  updateAvatar: protectedProcedure // опиши мету и output для trpc-to-openapi
     .input(
       z.object({
         url: z.string(),

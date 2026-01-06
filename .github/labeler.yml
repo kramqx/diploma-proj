@@ -1,0 +1,26 @@
+app-layer:
+  - 'src/app/**/*'
+widgets-layer:
+  - 'src/widgets/**/*'
+features-layer:
+  - 'src/features/**/*'
+entities-layer:
+  - 'src/entities/**/*'
+shared-layer:
+  - 'src/shared/**/*'
+
+backend:
+  - 'src/server/**/*'
+  - 'src/app/api/**/*'
+database:
+  - 'prisma/**/*'
+  - 'src/shared/api/db/**/*'
+
+generated:
+  - 'src/generated/**/*'
+
+configs:
+  - '*.json'
+  - '*.config.ts'
+  - '.github/**/*'
+  - 'pnpm-lock.yaml'

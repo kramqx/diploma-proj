@@ -8,9 +8,10 @@ on:
 
 permissions:
   contents: read
+  pull-requests: write
 
 jobs:
-  build-and-test:
+  quality-and-build:
     runs-on: ubuntu-latest
 
     services:
@@ -30,12 +31,10 @@ jobs:
 
     env:
       DATABASE_URL: postgresql://user:password@localhost:5432/test_db
-
       RESEND_API_KEY: "re_123456789"
       NEXTAUTH_SECRET: "super-secret-dummy-key-for-ci"
       NEXTAUTH_URL: "http://localhost:3000"
       UPLOADTHING_TOKEN: "eyJdummy.token.for.build"
-
       SKIP_ENV_VALIDATION: 1
       NEXT_TELEMETRY_DISABLED: 1
       HUSKY: 0
@@ -53,35 +52,83 @@ jobs:
           node-version: 22
           cache: 'pnpm'
 
-      - name: Cache Next.js build
-        uses: actions/cache@v4
-        with:
-          path: |
-            ${{ github.workspace }}/.next/cache
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-nextjs-
-
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-
-      - name: Prisma Generate
-        run: pnpm prisma generate
-
-      - name: Verify Database Schema
-        run: pnpm prisma db push
-
-      - name: Linting
-        run: pnpm lint
 
       - name: Check Formatting
         run: pnpm prettier --check .
 
-      - name: Run secretlint
-        run: pnpm run secretlint
+      - name: Linting
+        run: pnpm lint
 
       - name: Type Checking
         run: pnpm tsc --noEmit
 
+      - name: Run Secretlint
+        run: pnpm run secretlint:check
+
+      - name: Check for Typos (CSpell)
+        run: pnpm dlx cspell "**/*" --no-progress --show-suggestions
+
+      - name: Find Unused Code (Knip)
+        run: pnpm run knip
+        env:
+          DATABASE_URL: ${{ env.DATABASE_URL }}
+
+      - name: Security audit
+        run: pnpm audit --audit-level=high
+
+      - name: Prisma Generate
+        run: pnpm prisma generate
+
+      - name: Check Code Duplication (JSCPD)
+        run: pnpm run dup
+
+      - name: Check Type Coverage
+        run: pnpm run typecheck:coverage
+
+      - name: Verify Database Schema
+        run: pnpm prisma db push
+
+      - name: Cache Next.js build
+        uses: actions/cache@v4
+        with:
+          path: ${{ github.workspace }}/.next/cache
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-
+
       - name: Build
         run: pnpm build
+
+      - name: Notify Telegram on Success
+        uses: appleboy/telegram-action@master
+        if: success()
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          format: markdown
+          message: |
+            ✅ **CI Success!**
+            Проект **${{ github.repository }}** успешно прошел все проверки и собран.
+
+            **Ветка:** `${{ github.ref_name }}`
+            **Коммит:** `${{ github.event.head_commit.message }}`
+
+            🚀 Все системы в норме, можно отдыхать!
+
+      - name: Notify Telegram on Failure
+        uses: appleboy/telegram-action@master
+        if: failure()
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          format: markdown
+          message: |
+            ❌ **CI Failed!**
+            В проекте **${{ github.repository }}** что-то пошло не так.
+
+            **Ветка:** `${{ github.ref_name }}`
+            **Ошибка на шаге:** сборка или проверка упала.
+
+            [Посмотреть логи ошибки](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
