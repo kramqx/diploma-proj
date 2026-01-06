@@ -34,11 +34,9 @@ jobs:
       RESEND_API_KEY: "re_123456789"
       NEXTAUTH_SECRET: "super-secret-dummy-key-for-ci"
       NEXTAUTH_URL: "http://localhost:3000"
-      
       UPLOADTHING_TOKEN: "eyJdummy.token.for.build"
 
       SKIP_ENV_VALIDATION: 1
-      
       NEXT_TELEMETRY_DISABLED: 1
       HUSKY: 0
 
@@ -75,6 +73,12 @@ jobs:
 
       - name: Linting
         run: pnpm lint
+
+      - name: Check Formatting
+        run: pnpm prettier --check .
+
+      - name: Run secretlint
+        run: pnpm run secretlint
 
       - name: Type Checking
         run: pnpm tsc --noEmit
