@@ -304,6 +304,9 @@ importers:
       lint-staged:
         specifier: ^16.2.7
         version: 16.2.7
+      openapi-typescript-codegen:
+        specifier: ^0.30.0
+        version: 0.30.0(@types/json-schema@7.0.15)
       prettier:
         specifier: ^3.7.4
         version: 3.7.4
@@ -340,6 +343,9 @@ importers:
       type-coverage:
         specifier: ^2.29.7
         version: 2.29.7(typescript@5.9.3)
+      typedoc:
+        specifier: ^0.28.15
+        version: 0.28.15(typescript@5.9.3)
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
@@ -8128,6 +8134,16 @@ snapshots:
   '@floating-ui/utils@0.2.10': {}
 
   '@gerrit0/mini-shiki@3.20.0':
+    dependencies:
+      '@shikijs/engine-oniguruma': 3.21.0
+      '@shikijs/langs': 3.21.0
+      '@shikijs/themes': 3.21.0
+      '@shikijs/types': 3.21.0
+      '@shikijs/vscode-textmate': 10.0.2
+
+  '@hapi/bourne@3.0.0': {}
+
+  '@hono/node-server@1.19.6(hono@4.10.6)':
     dependencies:
       '@shikijs/engine-oniguruma': 3.21.0
       '@shikijs/langs': 3.21.0
