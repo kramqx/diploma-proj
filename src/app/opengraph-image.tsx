@@ -6,15 +6,12 @@ export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 export default async function Image() {
-  const fontData = await fetch(
-    new URL(
-      "https://cdn.jsdelivr.net/fontsource/fonts/inter@latest/latin-700-normal.ttf",
-      import.meta.url
-    )
-  ).then((res) => {
-    if (!res.ok) throw new Error("Failed to load font");
-    return res.arrayBuffer();
-  });
+  const fontData = await fetch(new URL("./fonts/IntelOneMono-Light.woff2", import.meta.url)).then(
+    (res) => {
+      if (!res.ok) throw new Error("Failed to load font");
+      return res.arrayBuffer();
+    }
+  );
 
   return new ImageResponse(
     <div

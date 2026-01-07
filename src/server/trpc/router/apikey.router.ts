@@ -110,7 +110,7 @@ export const apiKeyRouter = createTRPCRouter({
       });
 
       return {
-        active: allKeys.filter((k) => !k.revoked),
+        active: allKeys.filter((k) => k.revoked !== true),
         archived: allKeys.filter((k) => k.revoked),
       };
     }),

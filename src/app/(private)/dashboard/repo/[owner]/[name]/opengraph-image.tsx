@@ -6,10 +6,7 @@ export const contentType = "image/png";
 
 export default async function Image({ params }: { params: { owner: string; name: string } }) {
   const fontData = await fetch(
-    new URL(
-      "https://cdn.jsdelivr.net/fontsource/fonts/inter@latest/latin-600-normal.ttf",
-      import.meta.url
-    )
+    new URL("../../../../../fonts/IntelOneMono-Light.woff2", import.meta.url)
   ).then((res) => {
     if (!res.ok) throw new Error("Failed to load font");
     return res.arrayBuffer();

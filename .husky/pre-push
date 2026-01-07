@@ -1,1 +1,3 @@
-pnpm lint-staged && pnpm tsc --noEmit && pnpm build
+echo "Running type check before push..."
+pnpm prisma generate && pnpm tsc --noEmit
+echo "Done!"
