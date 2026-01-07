@@ -102,6 +102,79 @@ jobs:
       - name: Build
         run: pnpm build
 
+      - name: Collect CI metadata (PR, branch, commit, duration)
+        env:
+          BRANCH_NAME: ${{ github.ref_name }}
+          REPO: ${{ github.repository }}
+          RUN_ID: ${{ github.run_id }}
+          GITHUB_SHA: ${{ github.sha }}
+        run: |
+          python3 - <<'PY'
+          import os, json, subprocess
+          event_path = os.environ.get("GITHUB_EVENT_PATH", "")
+          pr_url = "не PR"
+          pr_user = "—"
+          additions = "0"
+          deletions = "0"
+          changed_files = "0"
+          if event_path and os.path.exists(event_path):
+            try:
+              e = json.load(open(event_path))
+              pr = e.get("pull_request")
+              if pr:
+                pr_url = pr.get("html_url", "не PR")
+                pr_user = pr.get("user", {}).get("login", "—")
+                additions = str(pr.get("additions", 0))
+                deletions = str(pr.get("deletions", 0))
+                changed_files = str(pr.get("changed_files", 0))
+            except Exception:
+              pass
+
+          # commit author (fallback to GITHUB_ACTOR)
+          commit = os.environ.get("GITHUB_SHA", "")
+          author = os.environ.get("GITHUB_ACTOR", "—")
+          try:
+            author = subprocess.check_output(["git","show","-s","--format=%an", commit]).decode().strip() or author
+          except Exception:
+            pass
+
+          # start time & duration
+          start_time = os.environ.get("GITHUB_RUN_STARTED_AT", "")
+          duration = "—"
+          try:
+            if start_time:
+              start_ts = int(subprocess.check_output(["date","-d", start_time, "+%s"]).decode().strip())
+              now_ts = int(subprocess.check_output(["date","+%s"]).decode().strip())
+              diff = max(0, now_ts - start_ts)
+              hh = diff // 3600
+              mm = (diff % 3600) // 60
+              ss = diff % 60
+              duration = f"{hh:02d}:{mm:02d}:{ss:02d}"
+          except Exception:
+            pass
+
+          branch = os.environ.get("BRANCH_NAME", "")
+          repo = os.environ.get("REPO", "")
+          commit_url = f"https://github.com/{repo}/commit/{commit}" if repo and commit else "—"
+          branch_url = f"https://github.com/{repo}/tree/{branch}" if repo and branch else "—"
+
+          # записываем в GITHUB_ENV
+          env_path = os.environ.get("GITHUB_ENV")
+          if env_path:
+            with open(env_path, "a") as f:
+              f.write(f"PR_URL={pr_url}\n")
+              f.write(f"PR_USER={pr_user}\n")
+              f.write(f"PR_ADDITIONS={additions}\n")
+              f.write(f"PR_DELETIONS={deletions}\n")
+              f.write(f"PR_CHANGED_FILES={changed_files}\n")
+              f.write(f"BRANCH_URL={branch_url}\n")
+              f.write(f"COMMIT_URL={commit_url}\n")
+              f.write(f"COMMIT_AUTHOR={author}\n")
+              f.write(f"RUN_STARTED_AT={start_time}\n")
+              f.write(f"RUN_DURATION={duration}\n")
+          print("CI metadata saved to GITHUB_ENV")
+          PY
+
       - name: Notify Telegram on Success
         uses: appleboy/telegram-action@master
         if: success()
@@ -111,16 +184,18 @@ jobs:
           format: markdown
           message: |
             ✅ **CI Success!**
-            Проект **${{ github.repository }}** успешно прошел все проверки и собран.
+            Проект **${{ github.repository }}** успешно прошёл все проверки и собран.
 
-            **Ветка:** `${{ github.ref_name }}`
-            **Коммит:** [`${{ github.sha }}`](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
-            **PR:** ${{ github.event.pull_request.html_url || "не PR" }}
-            **Дата/Время:** $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+            **Ветка:** [${{ github.ref_name }}](${{ env.BRANCH_URL }})
+            **Коммит:** [`${{ github.sha }}`](${{ env.COMMIT_URL }}) — автор: `${{ env.COMMIT_AUTHOR }}`
+            **PR:** ${{ env.PR_URL }}
+            **PR Автор:** `${{ env.PR_USER }}`  •  **Файлы:** `${{ env.PR_CHANGED_FILES }}`  •  `+${{ env.PR_ADDITIONS }} / -${{ env.PR_DELETIONS }}`
+            **Начало CI:** `${{ env.RUN_STARTED_AT }}`
+            **Длительность:** `${{ env.RUN_DURATION }}`
 
             [Посмотреть Workflow](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
 
-            🚀 Все системы в норме, можно отдыхать!
+            🚀 Все системы в норме!
 
       - name: Notify Telegram on Failure
         uses: appleboy/telegram-action@master
@@ -133,10 +208,11 @@ jobs:
             ❌ **CI Failed!**
             В проекте **${{ github.repository }}** что-то пошло не так.
 
-            **Ветка:** `${{ github.ref_name }}`
-            **Коммит:** [`${{ github.sha }}`](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
-            **PR:** ${{ github.event.pull_request.html_url || "не PR" }}
-            **Ошибка на шаге:** сборка или проверка упала.
-            **Дата/Время:** $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+            **Ветка:** [${{ github.ref_name }}](${{ env.BRANCH_URL }})
+            **Коммит:** [`${{ github.sha }}`](${{ env.COMMIT_URL }}) — автор: `${{ env.COMMIT_AUTHOR }}`
+            **PR:** ${{ env.PR_URL }}
+            **PR Автор:** `${{ env.PR_USER }}`  •  **Файлы:** `${{ env.PR_CHANGED_FILES }}`  •  `+${{ env.PR_ADDITIONS }} / -${{ env.PR_DELETIONS }}`
+            **Начало CI:** `${{ env.RUN_STARTED_AT }}`
+            **Длительность:** `${{ env.RUN_DURATION }}`
 
             [Посмотреть Workflow и логи](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
