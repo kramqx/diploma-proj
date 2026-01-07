@@ -114,7 +114,11 @@ jobs:
             Проект **${{ github.repository }}** успешно прошел все проверки и собран.
 
             **Ветка:** `${{ github.ref_name }}`
-            **Коммит:** `${{ github.event.head_commit.message }}`
+            **Коммит:** [`${{ github.sha }}`](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
+            **PR:** ${{ github.event.pull_request.html_url || "не PR" }}
+            **Дата/Время:** $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+
+            [Посмотреть Workflow](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
 
             🚀 Все системы в норме, можно отдыхать!
 
@@ -130,6 +134,9 @@ jobs:
             В проекте **${{ github.repository }}** что-то пошло не так.
 
             **Ветка:** `${{ github.ref_name }}`
+            **Коммит:** [`${{ github.sha }}`](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
+            **PR:** ${{ github.event.pull_request.html_url || "не PR" }}
             **Ошибка на шаге:** сборка или проверка упала.
+            **Дата/Время:** $(date -u +"%Y-%m-%d %H:%M:%S UTC")
 
-            [Посмотреть логи ошибки](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            [Посмотреть Workflow и логи](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
