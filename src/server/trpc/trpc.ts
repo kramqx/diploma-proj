@@ -1,4 +1,5 @@
 import { initTRPC, TRPCError } from "@trpc/server";
+import { enhance } from "@zenstackhq/runtime";
 import superjson from "superjson";
 import { OpenApiMeta } from "trpc-to-openapi";
 
@@ -21,13 +22,29 @@ export const t = initTRPC
     },
   });
 
+const withZenStack = t.middleware(async ({ ctx, next }) => {
+  const sessionId = ctx.session?.user?.id;
+  const userId = sessionId !== undefined && sessionId !== null ? Number(sessionId) : undefined;
+
+  const protectedDb = enhance(ctx.prisma, {
+    user: userId !== undefined ? { id: userId } : undefined,
+  });
+
+  return next({
+    ctx: {
+      ...ctx,
+      db: protectedDb,
+    },
+  });
+});
+
 const contextMiddleware = t.middleware(async ({ ctx, next }) => {
   return requestContext.run(ctx.requestInfo, () => next({ ctx }));
 });
 
 export const createTRPCRouter = t.router;
 export const createCallerFactory = t.createCallerFactory;
-export const publicProcedure = t.procedure.use(contextMiddleware);
+export const publicProcedure = t.procedure.use(contextMiddleware).use(withZenStack);
 
 const isAuthed = t.middleware(({ ctx, next }) => {
   if (ctx.session == null || ctx.session.user == null) {

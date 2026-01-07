@@ -12,6 +12,7 @@ ignoredBuiltDependencies:
 onlyBuiltDependencies:
   - msgpackr-extract
   - nexus-prisma
+  - zenstack
 
 overrides:
   cross-spawn@>=7.0.0 <7.0.5: '>=7.0.5'
