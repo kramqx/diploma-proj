@@ -1,5 +1,8 @@
 name: Mutation Testing (Weekly)
 
+permissions:
+  contents: read
+
 on:
   schedule:
     - cron: '0 2 * * 0' 
