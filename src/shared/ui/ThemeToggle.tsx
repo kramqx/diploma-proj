@@ -35,6 +35,7 @@ export function ThemeToggle({ className }: Props) {
         variant="ghost"
         size="icon"
         onClick={() => setTheme(isDark ? "light" : "dark")}
+        aria-label={isDark ? "Переключить на светлую тему" : "Переключить на темную тему"}
       >
         {isDark ? <Moon className="h-4.5" /> : <Sun className="h-4.5" />}
       </Button>
