@@ -107,6 +107,7 @@
     "@cspell/dict-ru_ru": "^2.3.2",
     "@faker-js/faker": "^10.1.0",
     "@ianvs/prettier-plugin-sort-imports": "^4.7.0",
+    "@lhci/cli": "^0.15.1",
     "@mermaid-js/mermaid-cli": "^11.12.0",
     "@next/bundle-analyzer": "^16.1.0",
     "@secretlint/secretlint-rule-pattern": "^11.2.5",
