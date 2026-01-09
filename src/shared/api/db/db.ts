@@ -3,6 +3,8 @@ import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "@prisma/client";
 import pg from "pg";
 
+import { logger } from "@/shared/lib/logger";
+
 import { requestContext } from "@/server/utils/requestContext";
 
 const pool = new pg.Pool({
@@ -34,6 +36,47 @@ const softDeleteClient = baseClient.$extends({
   },
 });
 
+const SENSITIVE_FIELDS = new Set([
+  "password",
+  "newPassword",
+  "passwordHash",
+  "hash",
+  "salt",
+  "token",
+  "sessionToken",
+  "verificationToken",
+  "identifier",
+  "access_token",
+  "refresh_token",
+  "id_token",
+  "hashedKey",
+  "secret",
+  "clientSecret",
+  "cvv",
+  "creditCard",
+  "iban",
+]);
+
+const sanitizePayload = (obj: any): any => {
+  if (!obj || typeof obj !== "object") return obj;
+
+  if (Array.isArray(obj)) {
+    return obj.map(sanitizePayload);
+  }
+
+  const newObj: any = {};
+  for (const key in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+      if (SENSITIVE_FIELDS.has(key)) {
+        newObj[key] = "***REDACTED***";
+      } else {
+        newObj[key] = sanitizePayload(obj[key]);
+      }
+    }
+  }
+  return newObj;
+};
+
 export const prisma = softDeleteClient.$extends({
   query: {
     $allModels: {
@@ -41,89 +84,57 @@ export const prisma = softDeleteClient.$extends({
         const start = performance.now();
         const ctx = requestContext.getStore();
 
+        let result;
+        try {
+          result = await query(args);
+        } catch (error) {
+          throw error;
+        }
+
+        const duration = performance.now() - start;
+
+        if (duration > 200) {
+          logger.warn({
+            msg: "Slow DB Query",
+            type: "db.slow",
+            model,
+            operation,
+            durationMs: duration.toFixed(2),
+          });
+        }
+
         const mutationOps = ["create", "update", "updateMany", "upsert", "delete", "deleteMany"];
 
         if (mutationOps.includes(operation) && model !== "AuditLog") {
           const finalArgs = args as any;
-          const rawUserId = finalArgs?.data?.userId ?? finalArgs?.where?.userId;
-          const auditUserId = typeof rawUserId === "number" ? rawUserId : null;
 
-          let payloadToLog = {};
+          const auditUserId =
+            finalArgs?.data?.userId ??
+            finalArgs?.create?.userId ??
+            finalArgs?.update?.userId ??
+            finalArgs?.where?.userId ??
+            null;
+
+          const safePayload = sanitizePayload(args);
+
           try {
-            payloadToLog = JSON.parse(JSON.stringify(finalArgs));
-          } catch (e) {
-            payloadToLog = { error: "Circular structure or stringify failed" };
-          }
-
-          const sensitiveFields = [
-            "password",
-            "newPassword",
-            "confirmPassword",
-            "passwordHash",
-            "hash",
-            "salt",
-
-            "token",
-            "session_token",
-            "sessionToken",
-            "verificationToken",
-            "identifier",
-
-            "access_token",
-            "accessToken",
-            "refresh_token",
-            "refreshToken",
-            "id_token",
-            "idToken",
-            "session_state",
-
-            "hashedKey",
-            "secret",
-            "clientSecret",
-            "clientId",
-
-            // "email",
-            // "phone",
-            // "phoneNumber",
-
-            "cvv",
-            "creditCard",
-            "cardNumber",
-            "iban",
-          ];
-
-          const sanitize = (obj: any) => {
-            if (!obj || typeof obj !== "object") return;
-            Object.keys(obj).forEach((key) => {
-              if (sensitiveFields.includes(key)) {
-                obj[key] = "***REDACTED***";
-              } else if (typeof obj[key] === "object") {
-                sanitize(obj[key]);
-              }
-            });
-          };
-
-          sanitize(payloadToLog);
-
-          (baseClient as any).auditLog
-            .create({
+            await (baseClient as any).auditLog.create({
               data: {
-                model: model,
-                operation: operation,
-                payload: payloadToLog,
-                userId: auditUserId,
+                model,
+                operation,
+                payload: safePayload,
+                userId: typeof auditUserId === "number" ? auditUserId : null,
                 ip: ctx?.ip ?? "system",
                 userAgent: ctx?.userAgent ?? "internal",
               },
-            })
-            .catch((err: any) => console.error("Audit Log Failed:", err));
-        }
-
-        const result = await query(args);
-
-        const duration = performance.now() - start;
-        if (duration > 200) {
-          console.warn(`[Prisma Slow Query] ${model}.${operation} took ${duration.toFixed(2)}ms`);
+            });
+          } catch (auditErr) {
+            logger.error({
+              msg: "AUDIT WRITE FAILED",
+              model,
+              error: auditErr,
+            });
+          }
         }
 
         return result;

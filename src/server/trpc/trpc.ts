@@ -4,6 +4,8 @@ import { enhance } from "@zenstackhq/runtime";
 import superjson from "superjson";
 import { OpenApiMeta } from "trpc-to-openapi";
 
+import { logger } from "@/shared/lib/logger";
+
 import { Context } from "@/server/trpc/context";
 import { requestContext } from "@/server/utils/requestContext";
 
@@ -49,9 +51,48 @@ const contextMiddleware = t.middleware(async ({ ctx, next }) => {
   return requestContext.run(ctx.requestInfo, () => next({ ctx }));
 });
 
+const loggerMiddleware = t.middleware(async ({ path, type, next, ctx }) => {
+  const start = performance.now();
+  const userId = ctx.session?.user?.id ?? "guest";
+  const role = ctx.session?.user?.role ?? "anon";
+
+  // может быть шумно
+  // logger.debug({ msg: 'Incoming tRPC', path, userId });
+
+  const result = await next();
+
+  const durationMs = Number((performance.now() - start).toFixed(2));
+
+  const meta = {
+    path,
+    type,
+    userId,
+    role,
+    durationMs,
+    userAgent: ctx.requestInfo?.userAgent,
+  };
+
+  if (result.ok) {
+    logger.info({ ...meta, msg: "tRPC OK" });
+  } else {
+    logger.error({
+      ...meta,
+      msg: "tRPC Error",
+      code: result.error.code,
+      message: result.error.message,
+      // stack: result.error.stack, // стек
+    });
+  }
+
+  return result;
+});
+
 export const createTRPCRouter = t.router;
 export const createCallerFactory = t.createCallerFactory;
-export const publicProcedure = t.procedure.use(contextMiddleware).use(withZenStack);
+export const publicProcedure = t.procedure
+  .use(contextMiddleware)
+  .use(loggerMiddleware)
+  .use(withZenStack);
 
 const isAuthed = t.middleware(({ ctx, next }) => {
   if (ctx.session == null || ctx.session.user == null) {
