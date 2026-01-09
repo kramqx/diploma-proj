@@ -270,10 +270,45 @@ jobs:
         run: pnpm build
 
   # ------------------------------------------------------------------
-  # 6. УВЕДОМЛЕНИЯ (NOTIFY)
+  # 6. LIGHTHOUSE CI (PERFORMANCE)
+  # ------------------------------------------------------------------
+  lighthouse:
+    needs: [build]
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    if: needs.build.result == 'success'
+    env:
+      SKIP_ENV_VALIDATION: 1
+      DATABASE_URL: postgresql://user:password@localhost:5432/test_db
+      LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Restore Next.js cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ github.workspace }}/.next/cache
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}
+
+      - name: Build app (Fast with cache)
+        run: pnpm build
+
+      - name: Run Lighthouse CI
+        run: pnpm exec lhci autorun
+
+  # ------------------------------------------------------------------
+  # 7. УВЕДОМЛЕНИЯ (NOTIFY)
   # ------------------------------------------------------------------
   notify:
-    needs: [build]
+    needs: [build, lighthouse]
     if: always()
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -357,10 +392,10 @@ jobs:
           print("CI metadata saved to GITHUB_ENV")
           PY
 
-      # Уведомление об УСПЕХЕ (только если билд прошел)
+      # Уведомление об УСПЕХЕ
       - name: Notify Telegram on Success
         uses: appleboy/telegram-action@master
-        if: needs.build.result == 'success'
+        if: needs.build.result == 'success' && (needs.lighthouse.result == 'success' || needs.lighthouse.result == 'skipped')
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
@@ -380,10 +415,10 @@ jobs:
 
             🚀 Все системы в норме!
 
-      # Уведомление о ПРОВАЛЕ (если билд или любая проверка упали)
+      # Уведомление о ПРОВАЛЕ
       - name: Notify Telegram on Failure
         uses: appleboy/telegram-action@master
-        if: needs.build.result != 'success'
+        if: needs.build.result != 'success' || needs.lighthouse.result == 'failure'
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
