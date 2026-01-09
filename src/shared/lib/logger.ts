@@ -1,6 +1,8 @@
 import { Logger } from "next-axiom";
 import pino from "pino";
 
+import { requestContext } from "@/server/utils/requestContext";
+
 const isProd = process.env.NODE_ENV === "production";
 
 type LogPayload = {
@@ -13,47 +15,50 @@ const pinoLogger = pino({
   level: "debug",
   transport: {
     target: "pino-pretty",
-    options: {
-      colorize: true,
-      translateTime: "HH:MM:ss",
-      ignore: "pid,hostname",
-    },
+    options: { colorize: true, translateTime: "HH:MM:ss", ignore: "pid,hostname" },
   },
 });
 
 const axiomLogger = new Logger();
 
+const withContext = (obj: LogPayload) => {
+  const store = requestContext.getStore();
+  return {
+    ...store,
+    ...obj,
+  };
+};
 export const logger = {
   info: (obj: LogPayload) => {
-    if (!isProd) {
-      pinoLogger.info(obj);
+    const payload = withContext(obj);
+    if (isProd) {
+      axiomLogger.info(payload.msg, payload);
     } else {
-      const { msg, ...rest } = obj;
-      axiomLogger.info(msg, rest);
+      pinoLogger.info(payload);
     }
   },
   error: (obj: LogPayload) => {
-    if (!isProd) {
-      pinoLogger.error(obj);
+    const payload = withContext(obj);
+    if (isProd) {
+      axiomLogger.error(payload.msg, payload);
     } else {
-      const { msg, ...rest } = obj;
-      axiomLogger.error(msg, rest);
+      pinoLogger.error(payload);
     }
   },
   warn: (obj: LogPayload) => {
-    if (!isProd) {
-      pinoLogger.warn(obj);
+    const payload = withContext(obj);
+    if (isProd) {
+      axiomLogger.warn(payload.msg, payload);
     } else {
-      const { msg, ...rest } = obj;
-      axiomLogger.warn(msg, rest);
+      pinoLogger.warn(payload);
     }
   },
   debug: (obj: LogPayload) => {
-    if (!isProd) {
-      pinoLogger.debug(obj);
+    const payload = withContext(obj);
+    if (isProd) {
+      axiomLogger.debug(payload.msg, payload);
     } else {
-      const { msg, ...rest } = obj;
-      axiomLogger.debug(msg, rest);
+      pinoLogger.debug(payload);
     }
   },
   flush: async () => {

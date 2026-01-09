@@ -47,43 +47,50 @@ const withZenStack = t.middleware(async ({ ctx, next }) => {
   });
 });
 
-const contextMiddleware = t.middleware(async ({ ctx, next }) => {
-  return requestContext.run(ctx.requestInfo, () => next({ ctx }));
+const contextMiddleware = t.middleware(async ({ ctx, next, path, type }) => {
+  const requestId = crypto.randomUUID();
+  const sessionUser = ctx.session?.user;
+
+  return requestContext.run(
+    {
+      requestId,
+      userId:
+        sessionUser?.id !== undefined && sessionUser?.id !== null
+          ? Number(sessionUser.id)
+          : undefined,
+      userRole: sessionUser?.role,
+      ip: ctx.requestInfo.ip,
+      userAgent: ctx.requestInfo.userAgent,
+      referer: ctx.req.headers.get("referer") ?? undefined,
+      origin: ctx.req.headers.get("origin") ?? undefined,
+      path,
+      method: type,
+    },
+    () => next({ ctx })
+  );
 });
 
-const loggerMiddleware = t.middleware(async ({ path, type, next, ctx }) => {
+const loggerMiddleware = t.middleware(async ({ path, type, next }) => {
   const start = performance.now();
-  const userId = ctx.session?.user?.id ?? "guest";
-  const role = ctx.session?.user?.role ?? "anon";
-
-  // может быть шумно
-  // logger.debug({ msg: 'Incoming tRPC', path, userId });
-
   const result = await next();
-
   const durationMs = Number((performance.now() - start).toFixed(2));
 
-  const meta = {
-    path,
-    type,
-    userId,
-    role,
-    durationMs,
-    userAgent: ctx.requestInfo?.userAgent,
-  };
+  const meta = { path, type, durationMs };
 
   if (result.ok) {
-    logger.info({ ...meta, msg: "tRPC OK" });
+    logger.info({ ...meta, msg: `tRPC [${type}] ok: ${path}` });
   } else {
     logger.error({
       ...meta,
-      msg: "tRPC Error",
+      msg: `tRPC [${type}] error: ${path}`,
       code: result.error.code,
       message: result.error.message,
-      // stack: result.error.stack, // стек
+      stack: result.error.code === "INTERNAL_SERVER_ERROR" ? result.error.stack : undefined,
     });
+    if (process.env.NODE_ENV === "production") {
+      await logger.flush();
+    }
   }
-
   return result;
 });
 

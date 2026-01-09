@@ -82,18 +82,51 @@ export const prisma = softDeleteClient.$extends({
     $allModels: {
       async $allOperations({ model, operation, args, query }) {
         const start = performance.now();
-        const ctx = requestContext.getStore();
 
         let result;
         try {
           result = await query(args);
         } catch (error) {
+          logger.error({
+            msg: `DB Error: ${model}.${operation}`,
+            model,
+            operation,
+            error: error instanceof Error ? error.message : String(error),
+          });
           throw error;
         }
 
         const duration = performance.now() - start;
+        const mutationOps = ["create", "update", "updateMany", "upsert", "delete", "deleteMany"];
 
-        if (duration > 200) {
+        if (mutationOps.includes(operation) && model !== "AuditLog") {
+          const ctxStore = requestContext.getStore();
+          const userId = ctxStore?.userId ?? null;
+
+          try {
+            await (baseClient as any).auditLog.create({
+              data: {
+                model,
+                operation,
+                payload: sanitizePayload(args),
+                userId: userId !== null ? Number(userId) : null,
+                ip: ctxStore?.ip ?? "system",
+                userAgent: ctxStore?.userAgent ?? "internal",
+                requestId: ctxStore?.requestId ?? "unknown",
+              },
+            });
+          } catch (auditErr) {
+            logger.error({ msg: "AUDIT WRITE FAILED", error: auditErr });
+          }
+
+          logger.info({
+            msg: `DB Write: ${model}.${operation}`,
+            type: "db.write",
+            model,
+            operation,
+            durationMs: duration.toFixed(2),
+          });
+        } else if (duration > 200) {
           logger.warn({
             msg: "Slow DB Query",
             type: "db.slow",
@@ -101,40 +134,6 @@ export const prisma = softDeleteClient.$extends({
             operation,
             durationMs: duration.toFixed(2),
           });
-        }
-
-        const mutationOps = ["create", "update", "updateMany", "upsert", "delete", "deleteMany"];
-
-        if (mutationOps.includes(operation) && model !== "AuditLog") {
-          const finalArgs = args as any;
-
-          const auditUserId =
-            finalArgs?.data?.userId ??
-            finalArgs?.create?.userId ??
-            finalArgs?.update?.userId ??
-            finalArgs?.where?.userId ??
-            null;
-
-          const safePayload = sanitizePayload(args);
-
-          try {
-            await (baseClient as any).auditLog.create({
-              data: {
-                model,
-                operation,
-                payload: safePayload,
-                userId: typeof auditUserId === "number" ? auditUserId : null,
-                ip: ctx?.ip ?? "system",
-                userAgent: ctx?.userAgent ?? "internal",
-              },
-            });
-          } catch (auditErr) {
-            logger.error({
-              msg: "AUDIT WRITE FAILED",
-              model,
-              error: auditErr,
-            });
-          }
         }
 
         return result;
@@ -146,6 +145,7 @@ export const prisma = softDeleteClient.$extends({
 export type PrismaClientExtended = typeof prisma;
 
 const globalForPrisma = globalThis as unknown as { prisma: PrismaClientExtended };
+
 if (process.env.NODE_ENV !== "production") {
   globalForPrisma.prisma = prisma;
 }
