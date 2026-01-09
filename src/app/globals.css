@@ -136,7 +136,7 @@
   --color-danger: #cb252d;
   --color-success: #34d399;
   --color-warning: #d3d034;
-  --color-error: #f87171;
+  --color-error: #ff4141;
 }
 
 .dark {
@@ -194,9 +194,9 @@
     @apply bg-background text-foreground;
   }
 
-  html {
-    /* scrollbar-gutter: stable; */
-  }
+  /* html {
+    scrollbar-gutter: stable;
+  } */
 
   * {
     scrollbar-width: thin;
