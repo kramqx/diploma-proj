@@ -1,4 +1,4 @@
-import { execSync } from "node:child_process";
+import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 
@@ -13,8 +13,8 @@ const C = {
 
 const TEST_DIR = path.join(process.cwd(), "prisma/tests");
 
-function run(cmd: string) {
-  execSync(cmd, { stdio: "inherit" });
+function run(cmd: string, args: string[]) {
+  execFileSync(cmd, args, { stdio: "inherit" });
 }
 
 function getNumberedTests(): string[] {
@@ -34,7 +34,7 @@ async function main() {
 
   try {
     console.log(`${C.yellow}⚙️  Генерация ZenStack...${C.reset}`);
-    run("pnpm zenstack generate --schema prisma/schema.zmodel");
+    run("pnpm", ["zenstack", "generate", "--schema", "prisma/schema.zmodel"]);
 
     const tests = ["clean-db.ts", ...getNumberedTests()];
 
@@ -44,7 +44,7 @@ async function main() {
     for (const test of tests) {
       const testPath = path.join(TEST_DIR, test);
       console.log(`\n${C.cyan}▶ RUN ${test}${C.reset}`);
-      run(`pnpm tsx ${testPath}`);
+      run("pnpm", ["tsx", testPath]);
     }
 
     console.log(`\n${C.green}🎉 ВСЕ ТЕСТЫ УСПЕШНО ПРОЙДЕНЫ${C.reset}`);
