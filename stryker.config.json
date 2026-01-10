@@ -1,14 +1,18 @@
 {
   "$schema": "https://schema.stryker-mutator.io/stryker-config.schema.json",
-  "mutate": ["src/shared/api/db/**/*.ts"],
-  "testRunner": "command",
-  "commandRunner": {
-    "command": "pnpm tsx prisma/tests/run-all-tests.ts"
-  },
+  "testRunner": "vitest",
   "reporters": ["progress", "clear-text", "html"],
-  "concurrency": 1,
-  "ignorePatterns": [".next", "node_modules", "dist"],
-  "dryRunTimeoutMS": 600000,
-  "timeoutMS": 60000,
+  "concurrency": 2,
+  "vitest": {
+    "configFile": "vitest.config.ts"
+  },
+  "mutate": [
+    "src/server/services/**/*.ts",
+    "src/shared/lib/**/*.ts",
+    "src/shared/api/db/utils.ts",
+    "!src/**/*.spec.ts",
+    "!src/**/*.test.ts"
+  ],
+  "thresholds": { "high": 80, "low": 60, "break": 50 },
   "tempDirName": ".stryker-tmp"
 }
