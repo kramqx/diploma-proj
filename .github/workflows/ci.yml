@@ -189,6 +189,11 @@ jobs:
       github.event_name == 'schedule'
     runs-on: ubuntu-latest
     timeout-minutes: 60
+
+    permissions:
+      contents: read
+      pull-requests: write
+
     services:
       postgres:
         image: postgres:15
@@ -231,16 +236,20 @@ jobs:
       - name: Prisma Generate
         run: pnpm db:generate
 
-      - name: Run Unit Tests
-        run: pnpm test:unit
-
       - name: Verify Database Schema
         run: pnpm prisma db push
 
-      - name: Run Security Integration Tests
-        run: pnpm test:int
+      - name: Run Tests with Coverage
+        run: pnpm test:coverage
         env:
           DATABASE_URL: ${{ env.DATABASE_URL }}
+
+      - name: Report Coverage
+        if: github.event_name == 'pull_request'
+        uses: davelosert/vitest-coverage-report-action@v2
+        with:
+          json-summary-path: './coverage/coverage-summary.json'
+          json-final-path: './coverage/coverage-final.json'
 
   # ------------------------------------------------------------------
   # 6. СБОРКА (BUILD)
