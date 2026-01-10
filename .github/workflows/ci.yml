@@ -386,6 +386,13 @@ jobs:
           --health-timeout 5s
           --health-retries 5
 
+    env:
+      DATABASE_URL: postgresql://user:password@localhost:5432/test_db
+      NEXTAUTH_SECRET: "super-secret-dummy-key-for-ci"
+      NEXTAUTH_URL: "http://localhost:3000"
+      SKIP_ENV_VALIDATION: 1
+      NEXT_TELEMETRY_DISABLED: 1
+
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -417,12 +424,6 @@ jobs:
 
       - name: Run Playwright tests
         run: pnpm exec playwright test
-        env:
-          DATABASE_URL: postgresql://user:password@localhost:5432/test_db
-          NEXTAUTH_SECRET: "super-secret-dummy-key-for-ci"
-          NEXTAUTH_URL: "http://localhost:3000"
-          SKIP_ENV_VALIDATION: 1
-          NEXT_TELEMETRY_DISABLED: 1
 
       - name: Upload Playwright report
         if: always()
