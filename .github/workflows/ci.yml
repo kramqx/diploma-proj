@@ -275,6 +275,16 @@ jobs:
   lighthouse:
     needs: [build]
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: test_db
+        ports:
+          - 5432:5432
+
     timeout-minutes: 60
     if: needs.build.result == 'success'
     env:
