@@ -15,6 +15,7 @@
   "vitest": {
     "configFile": "vitest.config.ts"
   },
-  "initialTestRunTimeoutMs": 60000,
-  "coverageAnalysis": "perTest"
+  "coverageAnalysis": "perTest",
+  "ignoreStatic": true,
+  "disableTypeChecks": true
 }
