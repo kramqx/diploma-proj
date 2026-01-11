@@ -5,10 +5,10 @@ import { useHotkeys } from "react-hotkeys-hook";
 const NAV_MAP: Record<string, string> = {
   "alt+KeyO": "/dashboard",
   "alt+KeyR": "/dashboard/repo",
-  "alt+KeyS": "/dashboard/setting",
-  "alt+KeyP": "/dashboard/settings?tab=profile",
-  "alt+KeyB": "/dashboard/settings?tab=billing",
-  "alt+KeyA": "/dashboard/settings?tab=api-keys",
+  "alt+KeyS": "/dashboard/settings/profile",
+  "alt+KeyP": "/dashboard/settings/profile",
+  "alt+KeyB": "/dashboard/settings/billing",
+  "alt+KeyA": "/dashboard/settings/api-keys",
 };
 
 export function useNavigationHotkeys(onAction?: () => void) {
