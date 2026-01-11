@@ -9,10 +9,13 @@ import { cn } from "@/shared/lib/utils";
 import { MenuItem } from "@/shared/types/menuItem";
 import { SidebarMenuButton } from "@/shared/ui/sidebar";
 
-export function SidebarLink({ href, title, icon: Icon, isBlank }: MenuItem) {
+export function SidebarLink({ href, title, icon: Icon, isBlank, exact }: MenuItem) {
   const pathname = usePathname();
   const blank = isBlank === true;
-  const isActive = !blank && pathname === href;
+  const isActive =
+    exact === true
+      ? pathname === href
+      : !blank && (pathname === href || (href !== "/dashboard" && pathname?.startsWith(href)));
 
   return (
     <SidebarMenuButton

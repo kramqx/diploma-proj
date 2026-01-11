@@ -38,7 +38,7 @@ export const GET = () => {
           scheme: "bearer",
           bearerFormat: "API Key",
           description:
-            "Use the API Key created in your profile settings at https://doxynix.space/settings?tab=api-key",
+            "Use the API Key created in your profile settings at https://doxynix.space/settings/api-keys",
         },
       },
     });

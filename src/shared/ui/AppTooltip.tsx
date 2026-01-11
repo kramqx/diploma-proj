@@ -9,7 +9,7 @@ type Props = {
   open?: boolean;
 };
 
-export function AppTooltip({ children, content, delay = 0, open }: Props) {
+export function AppTooltip({ children, content, delay = 300, open }: Props) {
   return (
     <Tooltip delayDuration={delay} open={open}>
       <TooltipTrigger asChild>{children}</TooltipTrigger>

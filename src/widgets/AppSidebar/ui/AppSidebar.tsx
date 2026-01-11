@@ -41,7 +41,13 @@ export function AppSidebar() {
       <SidebarHeader>
         <SidebarMenu>
           {sidebarMenu.map((item) => (
-            <SidebarLink key={item.href} href={item.href} icon={item.icon} title={item.title} />
+            <SidebarLink
+              key={item.href}
+              href={item.href}
+              icon={item.icon}
+              title={item.title}
+              exact={item.exact}
+            />
           ))}
         </SidebarMenu>
       </SidebarHeader>

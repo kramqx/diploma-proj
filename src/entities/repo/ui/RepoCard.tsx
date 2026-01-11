@@ -53,13 +53,13 @@ export function RepoCard({ repo }: Props) {
                   href={`/dashboard/repo/${repo.owner}`}
                   className="truncate font-bold hover:underline"
                 >
-                  <span className="text-muted-foreground">{repo.owner}</span>
+                  <span className="text-muted-foreground">{repo.owner}/</span>
                 </Link>
                 <Link
                   href={`/dashboard/repo/${repo.owner}/${repo.name}`}
                   className="truncate font-bold hover:underline"
                 >
-                  <span>/{repo.name}</span>
+                  <span>{repo.name}</span>
                 </Link>
               </div>
               {visibility !== null && (

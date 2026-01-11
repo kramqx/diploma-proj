@@ -5,6 +5,7 @@ export type MenuItem = {
   title: ReactNode;
   icon?: ComponentType<{ className?: string }>;
   isBlank?: boolean;
+  exact?: boolean;
 };
 
 export type MenuItems = MenuItem[];
