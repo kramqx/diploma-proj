@@ -25,6 +25,36 @@ import { Spinner } from "@/shared/ui/spinner";
 
 import { useCreateRepoDialogStore } from "../model/create-repo-dialog.store";
 
+function isGitHubUrl(input: string): boolean {
+  const trimmed = input.trim();
+  if (!trimmed) {
+    return false;
+  }
+
+  // If the user enters something like "owner/repo", treat it as a GitHub URL-like input.
+  if (!/^https?:\/\//i.test(trimmed) && trimmed.includes("/")) {
+    try {
+      const normalized = `https://github.com/${trimmed.replace(/^\/+/, "")}`;
+      const parsed = new URL(normalized);
+      const hostname = parsed.hostname.toLowerCase();
+      return (
+        hostname === "github.com" ||
+        hostname.endsWith(".github.com")
+      );
+    } catch {
+      return false;
+    }
+  }
+
+  try {
+    const parsed = new URL(trimmed);
+    const hostname = parsed.hostname.toLowerCase();
+    return hostname === "github.com" || hostname.endsWith(".github.com");
+  } catch {
+    return false;
+  }
+}
+
 export function CreateRepoDialog() {
   const { open, closeDialog } = useCreateRepoDialogStore();
   const [url, setUrl] = useState("");
@@ -34,7 +64,7 @@ export function CreateRepoDialog() {
   const utils = trpc.useUtils();
   const [debouncedValue] = useDebounce(url, 300);
 
-  const isUrl = url.includes("github.com") || url.includes("/");
+  const isUrl = isGitHubUrl(url);
   const { data: suggestions, isFetching } = trpc.repo.searchGithub.useQuery(
     { query: debouncedValue },
     {
