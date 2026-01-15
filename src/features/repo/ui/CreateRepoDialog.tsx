@@ -31,16 +31,12 @@ function isGitHubUrl(input: string): boolean {
     return false;
   }
 
-  // If the user enters something like "owner/repo", treat it as a GitHub URL-like input.
   if (!/^https?:\/\//i.test(trimmed) && trimmed.includes("/")) {
     try {
       const normalized = `https://github.com/${trimmed.replace(/^\/+/, "")}`;
       const parsed = new URL(normalized);
       const hostname = parsed.hostname.toLowerCase();
-      return (
-        hostname === "github.com" ||
-        hostname.endsWith(".github.com")
-      );
+      return hostname === "github.com" || hostname.endsWith(".github.com");
     } catch {
       return false;
     }
