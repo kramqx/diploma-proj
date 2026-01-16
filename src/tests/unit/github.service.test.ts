@@ -3,12 +3,36 @@ import { describe, expect, it, vi } from "vitest";
 import { githubService } from "@/server/services/github.service";
 
 vi.mock("@octokit/rest", () => {
+  class MockOctokit {
+    static plugin() {
+      return MockOctokit;
+    }
+
+    repos = {
+      get: vi.fn().mockResolvedValue({ data: { id: 123, name: "test" } }),
+      listForAuthenticatedUser: vi.fn().mockResolvedValue({ data: [] }),
+    };
+
+    rest = {
+      repos: {
+        listForAuthenticatedUser: vi.fn(),
+      },
+    };
+
+    paginate = vi.fn().mockResolvedValue([]);
+
+    log = {
+      debug: vi.fn(),
+      info: vi.fn(),
+      warn: vi.fn(),
+      error: vi.fn(),
+    };
+
+    constructor() {}
+  }
+
   return {
-    Octokit: class MockOctokit {
-      repos = {
-        get: vi.fn().mockResolvedValue({ data: { id: 123, name: "test" } }),
-      };
-    },
+    Octokit: MockOctokit,
   };
 });
 
