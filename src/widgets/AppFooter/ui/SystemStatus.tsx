@@ -2,6 +2,7 @@
 
 import { trpc } from "@/shared/api/trpc";
 import { cn } from "@/shared/lib/utils";
+import { Button } from "@/shared/ui/button";
 
 export function SystemStatus() {
   const { data, isError, isLoading } = trpc.health.check.useQuery(undefined, {
@@ -15,30 +16,36 @@ export function SystemStatus() {
 
   return (
     <div className="text-muted-foreground flex items-center gap-2 text-xs font-medium">
-      <span className="relative flex h-2 w-2">
-        {(isHealthy || hasIssue) && (
-          <span
-            className={cn(
-              "absolute inline-flex h-full w-full animate-ping rounded-full opacity-75",
-              isHealthy && "bg-success",
-              hasIssue && "bg-error"
+      <Button variant="outline" asChild>
+        <a
+          href="https://status.doxynix.space"
+          rel="noopener noreferrer"
+          target="_blank"
+          className={cn(hasIssue && "text-error")}
+        >
+          <span className="relative flex h-2 w-2">
+            {(isHealthy || hasIssue) && (
+              <span
+                className={cn(
+                  "absolute inline-flex h-full w-full animate-ping rounded-full opacity-75",
+                  isHealthy && "bg-success",
+                  hasIssue && "bg-error"
+                )}
+              />
             )}
-          />
-        )}
 
-        <span
-          className={cn(
-            "relative inline-flex h-2 w-2 rounded-full",
-            isLoading && "bg-gray-400",
-            isHealthy && "bg-success",
-            hasIssue && "bg-error"
-          )}
-        ></span>
-      </span>
-
-      <span className={cn(hasIssue && "text-error")}>
-        {isLoading ? "Проверка..." : hasIssue ? "Сбой системы" : "Все системы в норме"}
-      </span>
+            <span
+              className={cn(
+                "relative inline-flex h-2 w-2 rounded-full",
+                isLoading && "bg-gray-400",
+                isHealthy && "bg-success",
+                hasIssue && "bg-error"
+              )}
+            ></span>
+          </span>
+          {isLoading ? "Проверка..." : hasIssue ? "Сбой системы" : "Все системы в норме"}
+        </a>
+      </Button>
     </div>
   );
 }
