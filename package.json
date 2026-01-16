@@ -44,7 +44,9 @@
     "test:unit": "vitest run src/tests/unit --config vitest.config.ts",
     "test:e2e": "pnpm exec playwright test",
     "test:coverage": "vitest run --coverage --config vitest.config.ts --no-file-parallelism",
-    "release": "standard-version && git push --follow-tags origin HEAD"
+    "changeset": "changeset",
+    "version": "changeset version && pnpm install --no-frozen-lockfile",
+    "release": "changeset publish"
   },
   "pnpm": {
     "overrides": {
@@ -120,6 +122,7 @@
     "zustand": "^5.0.9"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.29.8",
     "@commitlint/cli": "^20.2.0",
     "@commitlint/config-conventional": "^20.2.0",
     "@cspell/dict-ru_ru": "^2.3.2",
@@ -178,7 +181,6 @@
     "prisma-generator-fake-data": "^0.18.2",
     "prisma-json-schema-generator": "^5.1.5",
     "secretlint": "^11.2.5",
-    "standard-version": "^9.5.0",
     "tailwind-scrollbar": "^4.0.2",
     "tailwindcss": "^4.1.18",
     "ts-node": "^10.9.2",
