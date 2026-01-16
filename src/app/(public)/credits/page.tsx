@@ -4,7 +4,12 @@ export default function CreditsPage() {
       <h1>Кредиты и авторы</h1>
       <p>
         Фон на странице /auth: Free SVG Background by{" "}
-        <a className="underline hover:no-underline" target="_blank" href="https://bgjar.com">
+        <a
+          className="underline hover:no-underline"
+          rel="noopener noreferrer"
+          target="_blank"
+          href="https://bgjar.com"
+        >
           BGJar
         </a>
       </p>
