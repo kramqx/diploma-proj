@@ -79,17 +79,22 @@ const nextConfig: NextConfig = {
             key: "Content-Security-Policy",
             value: `
               default-src 'self';
-              script-src 'self' https://vercel.live;
-              style-src 'self';
+              script-src 'self' 'unsafe-inline' 'unsafe-eval' https://vercel.live https://va.vercel-scripts.com;;
+              style-src 'self' 'unsafe-inline';
               img-src 'self' blob: data:
+                https://sun1-26.userapi.com
                 https://ufs.sh
+                https://utfs.io
                 https://avatars.githubusercontent.com
                 https://lh3.googleusercontent.com
                 https://avatars.yandex.net;
               font-src 'self' data:;
               connect-src 'self'
                 https://ufs.sh
-                https://vitals.vercel-insights.com;
+                https://utfs.io
+                https://uploadthing.com
+                https://vitals.vercel-insights.com
+                https://axiom.co;
               frame-ancestors 'none';
               upgrade-insecure-requests;
             `
