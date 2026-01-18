@@ -7,6 +7,10 @@ const bundleAnalyzer = withBundleAnalyzer({
 });
 
 const nextConfig: NextConfig = {
+  onDemandEntries: {
+    maxInactiveAge: 15 * 1000,
+    pagesBufferLength: 2,
+  },
   cacheComponents: true, // если будут баги выключить
   reactStrictMode: true,
   compress: true,
@@ -20,7 +24,26 @@ const nextConfig: NextConfig = {
     },
   },
   reactCompiler: true, // аккуратно фича еще в бете
-  experimental: { typedEnv: true },
+  experimental: {
+    typedEnv: true,
+    taint: true,
+    serverComponentsHmrCache: true,
+    useLightningcss: true,
+    authInterrupts: true,
+    optimizePackageImports: [
+      "lucide-react",
+      "date-fns",
+      "@radix-ui/react-avatar",
+      "@radix-ui/react-dialog",
+      "@radix-ui/react-dropdown-menu",
+      "@radix-ui/react-select",
+      "@radix-ui/react-tooltip",
+      "@radix-ui/react-scroll-area",
+      "@headlessui/react",
+      "recharts",
+      "framer-motion",
+    ],
+  },
   typedRoutes: true,
   typescript: { ignoreBuildErrors: false },
   images: {
@@ -50,6 +73,11 @@ const nextConfig: NextConfig = {
         hostname: "utfs.io",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "ufs.sh",
+        pathname: "/**",
+      },
     ],
   },
   async redirects() {
@@ -59,11 +87,41 @@ const nextConfig: NextConfig = {
         destination: "/dashboard/settings/profile",
         permanent: true,
       },
-      // {
-      //   source: "/me", // если юзер введет /me его кинет на то что написано в destination
-      //   destination: "/dashboard/settings/profile",
-      //   permanent: false,
-      // },
+      {
+        source: "/o",
+        destination: "/dashboard",
+        permanent: false,
+      },
+      {
+        source: "/r",
+        destination: "/dashboard/repo",
+        permanent: false,
+      },
+      {
+        source: "/s",
+        destination: "/dashboard/settings/profile",
+        permanent: false,
+      },
+      {
+        source: "/me",
+        destination: "/dashboard/settings/profile",
+        permanent: false,
+      },
+      {
+        source: "/k",
+        destination: "/dashboard/settings/api-keys",
+        permanent: false,
+      },
+      {
+        source: "/d",
+        destination: "/dashboard/settings/danger-zone",
+        permanent: false,
+      },
+      {
+        source: "/n",
+        destination: "/dashboard/notifications",
+        permanent: false,
+      },
     ];
   },
   async headers() {
@@ -84,6 +142,7 @@ const nextConfig: NextConfig = {
               img-src 'self' blob: data:
                 https://sun1-26.userapi.com
                 https://ufs.sh
+                https://*.ufs.sh
                 https://utfs.io
                 https://avatars.githubusercontent.com
                 https://lh3.googleusercontent.com
@@ -94,6 +153,7 @@ const nextConfig: NextConfig = {
                 https://ufs.sh
                 https://utfs.io
                 https://uploadthing.com
+                https://*.uploadthing.com
                 https://vitals.vercel-insights.com
                 https://axiom.co;
               frame-ancestors 'none';
