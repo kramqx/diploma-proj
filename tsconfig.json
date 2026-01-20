@@ -31,5 +31,17 @@
     ".next/dev/types/**/*.ts",
     "trigger.config.ts"
   ],
-  "exclude": ["node_modules", ".vscode",  ".github", ".changeset", ".husky", ".next", ".trigger", "coverage", "public", "report", "src/generated"]
+  "exclude": [
+    "node_modules",
+    ".vscode",
+    ".github",
+    ".changeset",
+    ".husky",
+    ".next",
+    ".trigger",
+    "coverage",
+    "public",
+    "report",
+    "src/generated"
+  ]
 }
