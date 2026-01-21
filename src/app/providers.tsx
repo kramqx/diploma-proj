@@ -9,7 +9,7 @@ import { ThemeProvider } from "next-themes";
 import superjson from "superjson";
 
 import { trpc } from "@/shared/api/trpc";
-import { TooltipProvider } from "@/shared/ui/tooltip";
+import { TooltipProvider } from "@/shared/ui/core/tooltip";
 
 type Props = {
   children: ReactNode;

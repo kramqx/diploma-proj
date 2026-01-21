@@ -3,11 +3,11 @@
 import { MoveRight } from "lucide-react";
 
 import { smoothScrollTo } from "@/shared/lib/utils";
-import { AnimatedShinyText } from "@/shared/ui/animated-shiny-text";
-import { Button } from "@/shared/ui/button";
-import { Logo } from "@/shared/ui/Logo";
-import { ShimmerButton } from "@/shared/ui/shimmer-button";
-import { TextAnimate } from "@/shared/ui/text-animate";
+import { Button } from "@/shared/ui/core/button";
+import { Logo } from "@/shared/ui/icons/Logo";
+import { AnimatedShinyText } from "@/shared/ui/visuals/animated-shiny-text";
+import { ShimmerButton } from "@/shared/ui/visuals/shimmer-button";
+import { TextAnimate } from "@/shared/ui/visuals/text-animate";
 
 export function HeroSection() {
   return (

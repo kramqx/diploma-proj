@@ -1,6 +1,12 @@
 import { CircleOff } from "lucide-react";
 
-import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/shared/ui/empty";
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/shared/ui/core/empty";
 
 export function ApiKeysEmpty() {
   return (

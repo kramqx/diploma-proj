@@ -1,7 +1,7 @@
 "use client";
 
-import { AppTooltip } from "@/shared/ui/AppTooltip";
-import { SidebarTrigger, useSidebar } from "@/shared/ui/sidebar";
+import { SidebarTrigger, useSidebar } from "@/shared/ui/core/sidebar";
+import { AppTooltip } from "@/shared/ui/kit/AppTooltip";
 
 export function SidebarToggle() {
   const { state } = useSidebar();

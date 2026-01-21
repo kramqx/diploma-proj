@@ -4,10 +4,10 @@ import React, { forwardRef, useRef } from "react";
 import { BookCheck, Brain, User } from "lucide-react";
 
 import { cn } from "@/shared/lib/utils";
-import { AblyIcon } from "@/shared/ui/AblyIcon";
-import { AnimatedBeam } from "@/shared/ui/animated-beam";
-import { NeonIcon } from "@/shared/ui/NeonIcon";
-import { TriggerIcon } from "@/shared/ui/TriggerIcon";
+import { AblyIcon } from "@/shared/ui/icons/AblyIcon";
+import { NeonIcon } from "@/shared/ui/icons/NeonIcon";
+import { TriggerIcon } from "@/shared/ui/icons/TriggerIcon";
+import { AnimatedBeam } from "@/shared/ui/visuals/animated-beam";
 
 const Circle = forwardRef<HTMLDivElement, { className?: string; children?: React.ReactNode }>(
   ({ className, children }, ref) => {

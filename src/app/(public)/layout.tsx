@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 
-import { DotPattern } from "@/shared/ui/dot-pattern";
+import { DotPattern } from "@/shared/ui/visuals/dot-pattern";
 import { AppFooter } from "@/widgets/AppFooter";
 import { PublicHeader } from "@/widgets/PublicHeader";
 

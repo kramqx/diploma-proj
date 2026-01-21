@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 
 import { cn, loadedAvatars } from "@/shared/lib/utils";
-import { Skeleton } from "@/shared/ui/skeleton";
+import { Skeleton } from "@/shared/ui/core/skeleton";
 
 export function RepoAvatar({ src, alt }: { src: string | null; alt: string }) {
   const imageSrc = src ?? "/avatar-placeholder.png";

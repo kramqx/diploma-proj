@@ -1,8 +1,8 @@
 import Link from "next/link";
 
-import { DateComp } from "@/shared/ui/DateComp";
-import GitHubIcon from "@/shared/ui/github-icon";
-import { TelegramIcon } from "@/shared/ui/telegram-icon";
+import GitHubIcon from "@/shared/ui/icons/github-icon";
+import { TelegramIcon } from "@/shared/ui/icons/telegram-icon";
+import { DateComp } from "@/shared/ui/kit/DateComp";
 
 import { SystemStatus } from "./SystemStatus";
 

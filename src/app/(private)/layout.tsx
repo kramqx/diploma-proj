@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { getServerAuthSession } from "@/shared/api/auth/authOptions";
-import { SidebarProvider } from "@/shared/ui/sidebar";
+import { SidebarProvider } from "@/shared/ui/core/sidebar";
 import { CreateRepoDialog } from "@/features/repo";
 import { AppFooter } from "@/widgets/AppFooter";
 import { AppHeader } from "@/widgets/AppHeader";

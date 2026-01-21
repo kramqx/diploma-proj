@@ -14,11 +14,18 @@ import { UpdateProfileSchema } from "@/shared/api/schemas/user";
 import { trpc } from "@/shared/api/trpc";
 import { getInitials } from "@/shared/lib/getInititals";
 import { useUploadThing } from "@/shared/lib/uploadthing";
-import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/avatar";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/ui/card";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/ui/form";
-import { Input } from "@/shared/ui/input";
-import { LoadingButton } from "@/shared/ui/LoadingButton";
+import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/core/avatar";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/ui/core/card";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/shared/ui/core/form";
+import { Input } from "@/shared/ui/core/input";
+import { LoadingButton } from "@/shared/ui/kit/LoadingButton";
 
 type Props = {
   user: User;

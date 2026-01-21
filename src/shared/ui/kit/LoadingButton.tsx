@@ -2,8 +2,8 @@ import { ReactNode } from "react";
 
 import { cn } from "@/shared/lib/utils";
 
-import { Button } from "./button";
-import { Spinner } from "./spinner";
+import { Button } from "../core/button";
+import { Spinner } from "../core/spinner";
 
 type Props = {
   isLoading: boolean;

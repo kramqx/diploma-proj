@@ -10,14 +10,21 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 import { cn } from "@/shared/lib/utils";
-import { Button } from "@/shared/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/ui/form";
-import GithubIcon from "@/shared/ui/github-icon";
-import { GoogleIcon } from "@/shared/ui/google-icon";
-import { Input } from "@/shared/ui/input";
-import { LoadingButton } from "@/shared/ui/LoadingButton";
-import { Logo } from "@/shared/ui/Logo";
-import { YandexIcon } from "@/shared/ui/yandex-icon";
+import { Button } from "@/shared/ui/core/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/shared/ui/core/form";
+import { Input } from "@/shared/ui/core/input";
+import GithubIcon from "@/shared/ui/icons/github-icon";
+import { GoogleIcon } from "@/shared/ui/icons/google-icon";
+import { Logo } from "@/shared/ui/icons/Logo";
+import { YandexIcon } from "@/shared/ui/icons/yandex-icon";
+import { LoadingButton } from "@/shared/ui/kit/LoadingButton";
 
 const MagicLinkSchema = z.object({
   email: z

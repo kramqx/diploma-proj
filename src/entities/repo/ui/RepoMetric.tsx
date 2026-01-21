@@ -1,7 +1,7 @@
 import { ComponentType } from "react";
 
 import { cn } from "@/shared/lib/utils";
-import { AppTooltip } from "@/shared/ui/AppTooltip";
+import { AppTooltip } from "@/shared/ui/kit/AppTooltip";
 
 type Props = {
   icon?: ComponentType<{ className?: string }>;

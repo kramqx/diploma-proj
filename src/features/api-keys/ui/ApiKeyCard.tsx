@@ -1,6 +1,6 @@
 import { formatRelativeTime } from "@/shared/lib/utils";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/ui/card";
-import { CopyButton } from "@/shared/ui/CopyButton";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/ui/core/card";
+import { CopyButton } from "@/shared/ui/kit/CopyButton";
 
 import { UiApiKey } from "@/entities/api-keys";
 import { RevokeApiKeyDialog } from "./RevokeApiKeyDialog";

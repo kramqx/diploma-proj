@@ -4,10 +4,17 @@ import { useState } from "react";
 import { ChevronDown, History } from "lucide-react";
 
 import { cn, formatRelativeTime } from "@/shared/lib/utils";
-import { Badge } from "@/shared/ui/badge";
-import { Button } from "@/shared/ui/button";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/shared/ui/collapsible";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/shared/ui/table";
+import { Badge } from "@/shared/ui/core/badge";
+import { Button } from "@/shared/ui/core/button";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/shared/ui/core/collapsible";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/shared/ui/core/table";
 
 import { UiApiKey } from "@/entities/api-keys";
 

@@ -11,7 +11,7 @@ import { trpc } from "@/shared/api/trpc";
 import { commandMenuItems } from "@/shared/constants/navigation";
 import { useNavigationHotkeys } from "@/shared/hooks/use-navigation-hotkeys";
 import { cn } from "@/shared/lib/utils";
-import { Button } from "@/shared/ui/button";
+import { Button } from "@/shared/ui/core/button";
 import {
   CommandDialog,
   CommandEmpty,
@@ -21,8 +21,8 @@ import {
   CommandList,
   CommandSeparator,
   CommandShortcut,
-} from "@/shared/ui/command";
-import { Spinner } from "@/shared/ui/spinner";
+} from "@/shared/ui/core/command";
+import { Spinner } from "@/shared/ui/core/spinner";
 
 export function AppCommandMenu() {
   const [open, setOpen] = useState(false);

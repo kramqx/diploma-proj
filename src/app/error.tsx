@@ -4,9 +4,9 @@ import React, { useState } from "react";
 import Cookies from "js-cookie";
 import { ServerCrash } from "lucide-react";
 
-import BackOrLinkButton from "@/shared/ui/BackOrLinkButton";
-import { Button } from "@/shared/ui/button";
-import { CopyButton } from "@/shared/ui/CopyButton";
+import { Button } from "@/shared/ui/core/button";
+import BackOrLinkButton from "@/shared/ui/kit/BackOrLinkButton";
+import { CopyButton } from "@/shared/ui/kit/CopyButton";
 
 export default function Error({
   error,

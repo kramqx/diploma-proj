@@ -13,6 +13,26 @@ const STRONG_TEXT = "font-medium text-foreground";
 const LI_STYLES = "flex flex-col";
 const SPAN_STYLES = "text-sm";
 
+const BRANDS = [
+  { name: "Vercel", desc: "Primary encrypted data storage." },
+  { name: "Neon (PostgreSQL)", desc: "Database engine." },
+  { name: "Resend", desc: "Transactional emails for login." },
+  { name: "OAuth Providers", desc: "GitHub, Google, Yandex" },
+  { name: "Upstash / Redis", desc: "Caching and task queue management." },
+  { name: "Axiom", desc: "System error logging and diagnostics." },
+  { name: "UploadThing", desc: "Storage for user files and avatars." },
+  { name: "Pusher", desc: "WebSocket support (real-time updates)." },
+] as const;
+
+function PrivacyListItem({ name, desc }: { name: string; desc: string }) {
+  return (
+    <li className={LI_STYLES}>
+      <span className={STRONG_TEXT}>{name}</span>
+      <span className={SPAN_STYLES}>{desc}</span>
+    </li>
+  );
+}
+
 export default function PrivacyPage() {
   return (
     <div className="animate-fade-in container mx-auto max-w-3xl px-4 py-12">
@@ -84,46 +104,9 @@ export default function PrivacyPage() {
           </p>
           <div className="bg-muted/50 rounded-xl border p-4">
             <ul className="grid gap-3 sm:grid-cols-2">
-              <li className={LI_STYLES}>
-                <span className={STRONG_TEXT}>Vercel</span>
-                <span className={SPAN_STYLES}>
-                  Hosting, Edge Network, and performance analytics.
-                </span>
-              </li>
-
-              <li className={LI_STYLES}>
-                <span className={STRONG_TEXT}>Neon (PostgreSQL)</span>
-                <span className={SPAN_STYLES}>Primary encrypted data storage.</span>
-              </li>
-
-              <li className={LI_STYLES}>
-                <span className={STRONG_TEXT}>Resend</span>
-                <span className={SPAN_STYLES}>Transactional emails for login.</span>{" "}
-              </li>
-
-              <li className={LI_STYLES}>
-                <span className={STRONG_TEXT}>OAuth Providers</span>
-                <span className={SPAN_STYLES}>GitHub, Google, Yandex</span>
-              </li>
-
-              <li className={LI_STYLES}>
-                <span className={STRONG_TEXT}>Upstash / Redis</span>
-                <span className={SPAN_STYLES}>Caching and task queue management.</span>
-              </li>
-              <li className={LI_STYLES}>
-                <span className={STRONG_TEXT}>Axiom</span>
-                <span className={SPAN_STYLES}>
-                  System error logging and diagnostics (retained for 30 days).
-                </span>
-              </li>
-              <li className={LI_STYLES}>
-                <span className={STRONG_TEXT}>UploadThing</span>
-                <span className={SPAN_STYLES}>Storage for user files and avatars.</span>
-              </li>
-              <li className={LI_STYLES}>
-                <span className={STRONG_TEXT}>Pusher</span>
-                <span className={SPAN_STYLES}>WebSocket support (real-time updates).</span>
-              </li>
+              {BRANDS.map((item) => (
+                <PrivacyListItem key={item.name} name={item.name} desc={item.desc} />
+              ))}
             </ul>
           </div>
           <p className="text-muted-foreground mt-4 text-sm italic">

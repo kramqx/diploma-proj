@@ -1,5 +1,5 @@
 import { cn } from "@/shared/lib/utils";
-import { CopyButton } from "@/shared/ui/CopyButton";
+import { CopyButton } from "@/shared/ui/kit/CopyButton";
 
 export function CodeWindow({
   title,

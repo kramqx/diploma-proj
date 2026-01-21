@@ -6,11 +6,9 @@ import { trpc } from "@/shared/api/trpc";
 import { sidebarMenu } from "@/shared/constants/navigation";
 import { useIsMobile } from "@/shared/hooks/use-mobile";
 import { cn } from "@/shared/lib/utils";
-import { AppTooltip } from "@/shared/ui/AppTooltip";
-import { Button } from "@/shared/ui/button";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/shared/ui/collapsible";
-import { LoadingButton } from "@/shared/ui/LoadingButton";
-import { ScrollArea } from "@/shared/ui/scroll-area";
+import { Button } from "@/shared/ui/core/button";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/shared/ui/core/collapsible";
+import { ScrollArea } from "@/shared/ui/core/scroll-area";
 import {
   Sidebar,
   SidebarContent,
@@ -23,9 +21,11 @@ import {
   SidebarMenuItem,
   SidebarSeparator,
   useSidebar,
-} from "@/shared/ui/sidebar";
-import { Skeleton } from "@/shared/ui/skeleton";
-import { Spinner } from "@/shared/ui/spinner";
+} from "@/shared/ui/core/sidebar";
+import { Skeleton } from "@/shared/ui/core/skeleton";
+import { Spinner } from "@/shared/ui/core/spinner";
+import { AppTooltip } from "@/shared/ui/kit/AppTooltip";
+import { LoadingButton } from "@/shared/ui/kit/LoadingButton";
 
 import { SidebarLink } from "./SidebarLink";
 

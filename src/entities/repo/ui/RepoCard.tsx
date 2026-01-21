@@ -1,10 +1,10 @@
 import Link from "next/link";
 
 import { cn, formatFullDate, formatRelativeTime } from "@/shared/lib/utils";
-import { AppTooltip } from "@/shared/ui/AppTooltip";
-import { Card, CardContent } from "@/shared/ui/card";
-import { CopyButton } from "@/shared/ui/CopyButton";
-import GitHubIcon from "@/shared/ui/github-icon";
+import { Card, CardContent } from "@/shared/ui/core/card";
+import GitHubIcon from "@/shared/ui/icons/github-icon";
+import { AppTooltip } from "@/shared/ui/kit/AppTooltip";
+import { CopyButton } from "@/shared/ui/kit/CopyButton";
 
 import { getLanguageColor } from "../model/language-colors";
 import { getMetrics } from "../model/metrics";

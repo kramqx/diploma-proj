@@ -5,10 +5,10 @@ import type { Route } from "next";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Search } from "lucide-react";
 
-import { Input } from "@/shared/ui/input";
-import { Spinner } from "@/shared/ui/spinner";
+import { Input } from "@/shared/ui/core/input";
+import { Spinner } from "@/shared/ui/core/spinner";
 
-import { cn } from "../lib/utils";
+import { cn } from "../../lib/utils";
 
 type Props = {
   placeholder: string;

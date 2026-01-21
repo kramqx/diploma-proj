@@ -22,15 +22,15 @@ import {
   DialogHeader,
   DialogPortal,
   DialogTitle,
-} from "@/shared/ui/dialog";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/shared/ui/form";
-import GitHubIcon from "@/shared/ui/github-icon";
-import GithubIcon from "@/shared/ui/github-icon";
-import { Input } from "@/shared/ui/input";
-import { LoadingButton } from "@/shared/ui/LoadingButton";
-import { ScrollArea } from "@/shared/ui/scroll-area";
-import { Skeleton } from "@/shared/ui/skeleton";
-import { Spinner } from "@/shared/ui/spinner";
+} from "@/shared/ui/core/dialog";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/shared/ui/core/form";
+import { Input } from "@/shared/ui/core/input";
+import { ScrollArea } from "@/shared/ui/core/scroll-area";
+import { Skeleton } from "@/shared/ui/core/skeleton";
+import { Spinner } from "@/shared/ui/core/spinner";
+import GitHubIcon from "@/shared/ui/icons/github-icon";
+import GithubIcon from "@/shared/ui/icons/github-icon";
+import { LoadingButton } from "@/shared/ui/kit/LoadingButton";
 
 import { useCreateRepoDialogStore } from "../model/create-repo-dialog.store";
 import { RepoItem } from "./RepoItem";

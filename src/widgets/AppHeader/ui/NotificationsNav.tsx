@@ -4,15 +4,15 @@ import Link from "next/link";
 import { Bell } from "lucide-react";
 
 import { cn } from "@/shared/lib/utils";
-import { AppTooltip } from "@/shared/ui/AppTooltip";
-import { Button } from "@/shared/ui/button";
+import { Button } from "@/shared/ui/core/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/shared/ui/dropdown-menu";
+} from "@/shared/ui/core/dropdown-menu";
+import { AppTooltip } from "@/shared/ui/kit/AppTooltip";
 
 // NOTE: Заглушка! Потом заменишь на пропс или запрос
 const notifications = [

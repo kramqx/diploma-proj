@@ -2,7 +2,7 @@ import { ComponentType } from "react";
 import { BookOpen, FileCode, FileDiff, GitGraph } from "lucide-react";
 
 import { highlightCode } from "@/shared/lib/shiki";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/ui/core/tabs";
 
 import { CodeWindow } from "./CodeWindow";
 
@@ -76,7 +76,7 @@ export async function DocModesSection() {
 
       <Tabs
         defaultValue="readme"
-        className="mx-auto flex min-h-112.5 w-full max-w-6xl flex-col gap-8 lg:flex-row"
+        className="mx-auto flex min-h-125 w-full max-w-6xl flex-col gap-8 lg:flex-row"
       >
         <TabsList className="flex h-auto w-full flex-col items-stretch justify-start gap-2 bg-transparent p-0 lg:w-1/3">
           <TabsTriggerItem

@@ -12,8 +12,8 @@ import { connection } from "next/server";
 import { extractRouterConfig } from "uploadthing/server";
 
 import { cn } from "@/shared/lib/utils";
-import { ConsoleEasterEgg } from "@/shared/ui/ConsoleEasterEgg";
-import { Toaster } from "@/shared/ui/sonner";
+import { Toaster } from "@/shared/ui/core/sonner";
+import { ConsoleEasterEgg } from "@/shared/ui/kit/ConsoleEasterEgg";
 import { ourFileRouter } from "@/app/api/uploadthing/core";
 import { Providers } from "@/app/providers";
 

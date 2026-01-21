@@ -9,8 +9,8 @@ import { signOut } from "next-auth/react";
 
 import { userNavMenu } from "@/shared/constants/navigation";
 import { getInitials } from "@/shared/lib/getInititals";
-import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/avatar";
-import { Button } from "@/shared/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/core/avatar";
+import { Button } from "@/shared/ui/core/button";
 import {
   Dialog,
   DialogClose,
@@ -19,7 +19,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/shared/ui/dialog";
+} from "@/shared/ui/core/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -29,8 +29,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
-} from "@/shared/ui/dropdown-menu";
-import { LoadingButton } from "@/shared/ui/LoadingButton";
+} from "@/shared/ui/core/dropdown-menu";
+import { LoadingButton } from "@/shared/ui/kit/LoadingButton";
 
 type Props = {
   user: User;

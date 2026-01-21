@@ -12,8 +12,8 @@ import {
   PaginationEllipsis,
   PaginationItem,
   PaginationLink,
-} from "@/shared/ui/pagination";
-import { Spinner } from "@/shared/ui/spinner";
+} from "@/shared/ui/core/pagination";
+import { Spinner } from "@/shared/ui/core/spinner";
 
 type Props = {
   className?: string;

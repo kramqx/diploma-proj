@@ -10,8 +10,7 @@ import { z } from "zod";
 
 import { CreateApiKeySchema } from "@/shared/api/schemas/api-key";
 import { trpc } from "@/shared/api/trpc";
-import { AppTooltip } from "@/shared/ui/AppTooltip";
-import { Button } from "@/shared/ui/button";
+import { Button } from "@/shared/ui/core/button";
 import {
   Dialog,
   DialogContent,
@@ -20,11 +19,19 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/shared/ui/dialog";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/ui/form";
-import { Input } from "@/shared/ui/input";
-import { LoadingButton } from "@/shared/ui/LoadingButton";
-import { Textarea } from "@/shared/ui/textarea";
+} from "@/shared/ui/core/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/shared/ui/core/form";
+import { Input } from "@/shared/ui/core/input";
+import { Textarea } from "@/shared/ui/core/textarea";
+import { AppTooltip } from "@/shared/ui/kit/AppTooltip";
+import { LoadingButton } from "@/shared/ui/kit/LoadingButton";
 
 import { UiApiKey } from "@/entities/api-keys";
 
