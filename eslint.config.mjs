@@ -6,9 +6,9 @@ import prettierConfig from "eslint-config-prettier";
 import prettierPlugin from "eslint-plugin-prettier";
 import reactPlugin from "eslint-plugin-react";
 import reactHooksPlugin from "eslint-plugin-react-hooks";
+import unicorn from "eslint-plugin-unicorn";
 import unusedImportsPlugin from "eslint-plugin-unused-imports";
 import { defineConfig } from "eslint/config";
-import unicorn from "eslint-plugin-unicorn";
 
 export default defineConfig([
   {
@@ -25,7 +25,7 @@ export default defineConfig([
       "next.config.mjs",
       "coverage/**",
       "report/**",
-      ".trigger/**"
+      ".trigger/**",
     ],
   },
 
@@ -74,14 +74,12 @@ export default defineConfig([
         },
       ],
       "unicorn/filename-case": [
-      "error",
-      {
-        "case": "kebabCase",
-        "ignore": [
-            "README.md",
-        ]
-      }
-    ],
+        "error",
+        {
+          case: "kebabCase",
+          ignore: ["README.md"],
+        },
+      ],
 
       "@typescript-eslint/no-explicit-any": "warn",
       "@typescript-eslint/strict-boolean-expressions": "warn",
