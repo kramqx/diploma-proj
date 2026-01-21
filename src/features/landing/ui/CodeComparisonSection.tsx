@@ -1,5 +1,5 @@
 import { highlightCode } from "@/shared/lib/shiki";
-import { CodeComparison } from "@/shared/ui/code-comparison";
+import { CodeComparison } from "@/shared/ui/kit/code-comparison";
 
 export async function CodeComparisonSection() {
   const [badDark, badLight, goodDark, goodLight] = await Promise.all([

@@ -6,8 +6,14 @@ import { Status, Visibility } from "@prisma/client";
 import { X } from "lucide-react";
 
 import { parseRepoSearchParams, REPO_DEFAULTS } from "@/shared/lib/search-params";
-import { Button } from "@/shared/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/ui/select";
+import { Button } from "@/shared/ui/core/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/shared/ui/core/select";
 
 export function RepoFilters() {
   const router = useRouter();

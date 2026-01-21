@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/ui/core/tooltip";
 
 type Props = {
   children: ReactNode;

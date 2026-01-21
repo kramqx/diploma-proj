@@ -6,8 +6,8 @@ import { AlertTriangle, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { trpc } from "@/shared/api/trpc";
-import { Alert, AlertDescription, AlertTitle } from "@/shared/ui/alert";
-import { Button } from "@/shared/ui/button";
+import { Alert, AlertDescription, AlertTitle } from "@/shared/ui/core/alert";
+import { Button } from "@/shared/ui/core/button";
 import {
   Dialog,
   DialogClose,
@@ -17,8 +17,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/shared/ui/dialog";
-import { LoadingButton } from "@/shared/ui/LoadingButton";
+} from "@/shared/ui/core/dialog";
+import { LoadingButton } from "@/shared/ui/kit/LoadingButton";
 
 import { RepoMeta } from "@/entities/repo/model/types";
 

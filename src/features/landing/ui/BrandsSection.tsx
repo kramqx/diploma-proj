@@ -1,14 +1,14 @@
-import { AblyIcon } from "@/shared/ui/AblyIcon";
-import GitHubIcon from "@/shared/ui/github-icon";
-import { Marquee } from "@/shared/ui/marquee";
-import { NeonIcon } from "@/shared/ui/NeonIcon";
-import { NextJSIcon } from "@/shared/ui/NextJSIcon";
-import { OpenAiLogo } from "@/shared/ui/OpenAIIcon";
-import { ResendIcon } from "@/shared/ui/ResendIcon";
-import { TriggerIcon } from "@/shared/ui/TriggerIcon";
-import { UploadThingIcon } from "@/shared/ui/uploadThingIcon";
-import { UpstashIcon } from "@/shared/ui/UpstashIcon";
-import { VercelIcon } from "@/shared/ui/VercelIcon";
+import { AblyIcon } from "@/shared/ui/icons/AblyIcon";
+import GitHubIcon from "@/shared/ui/icons/github-icon";
+import { NeonIcon } from "@/shared/ui/icons/NeonIcon";
+import { NextJSIcon } from "@/shared/ui/icons/NextJSIcon";
+import { OpenAiLogo } from "@/shared/ui/icons/OpenAIIcon";
+import { ResendIcon } from "@/shared/ui/icons/ResendIcon";
+import { TriggerIcon } from "@/shared/ui/icons/TriggerIcon";
+import { UploadThingIcon } from "@/shared/ui/icons/uploadThingIcon";
+import { UpstashIcon } from "@/shared/ui/icons/UpstashIcon";
+import { VercelIcon } from "@/shared/ui/icons/VercelIcon";
+import { Marquee } from "@/shared/ui/visuals/marquee";
 
 export function BrandsSection() {
   const BRANDS = [

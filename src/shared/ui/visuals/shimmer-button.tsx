@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { cn } from "@/shared/lib/utils";
 
-import { Button } from "./button";
+import { Button } from "../core/button";
 
 export interface ShimmerButtonProps extends ComponentPropsWithoutRef<"button"> {
   shimmerColor?: string;

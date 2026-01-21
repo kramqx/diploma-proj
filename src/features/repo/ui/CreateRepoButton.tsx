@@ -2,7 +2,7 @@
 
 import { Plus } from "lucide-react";
 
-import { Button } from "@/shared/ui/button";
+import { Button } from "@/shared/ui/core/button";
 
 import { useCreateRepoDialogStore } from "../model/create-repo-dialog.store";
 

@@ -7,7 +7,6 @@ import { SlashIcon } from "lucide-react";
 import { User } from "next-auth";
 
 import { cn } from "@/shared/lib/utils";
-import { AppTooltip } from "@/shared/ui/AppTooltip";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -15,9 +14,10 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/shared/ui/breadcrumb";
-import { Logo } from "@/shared/ui/Logo";
-import { useSidebar } from "@/shared/ui/sidebar";
+} from "@/shared/ui/core/breadcrumb";
+import { useSidebar } from "@/shared/ui/core/sidebar";
+import { Logo } from "@/shared/ui/icons/Logo";
+import { AppTooltip } from "@/shared/ui/kit/AppTooltip";
 import { AppCommandMenu } from "@/widgets/AppCommandMenu";
 import { SidebarToggle } from "@/widgets/AppSidebar";
 

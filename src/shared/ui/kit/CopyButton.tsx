@@ -5,8 +5,8 @@ import { Check, Copy } from "lucide-react";
 import { useCopyToClipboard } from "@/shared/hooks/use-copy-to-clipboard";
 import { cn } from "@/shared/lib/utils";
 
+import { Button } from "../core/button";
 import { AppTooltip } from "./AppTooltip";
-import { Button } from "./button";
 
 type CopyButtonProps = {
   value: string;
@@ -18,7 +18,7 @@ type CopyButtonProps = {
 export function CopyButton({
   value,
   tooltipText = "Copy ID",
-  successText = "Copied!!",
+  successText = "Copied!",
   className,
 }: CopyButtonProps) {
   const { isCopied, copy } = useCopyToClipboard();

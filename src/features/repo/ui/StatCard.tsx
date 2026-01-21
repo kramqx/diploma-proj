@@ -1,7 +1,7 @@
 import { Activity, AlertCircle, FileText, FolderGit2, Loader2 } from "lucide-react";
 
 import { cn } from "@/shared/lib/utils";
-import { Card, CardContent } from "@/shared/ui/card";
+import { Card, CardContent } from "@/shared/ui/core/card";
 
 import { api } from "@/server/trpc/server";
 

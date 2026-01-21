@@ -1,4 +1,4 @@
-import PageLoader from "@/shared/ui/page-loader";
+import PageLoader from "@/shared/ui/kit/page-loader";
 
 export default function Loading() {
   return <PageLoader />;

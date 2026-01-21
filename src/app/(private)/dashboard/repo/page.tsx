@@ -1,8 +1,9 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 
-import { AppSearch } from "@/shared/ui/AppSearch";
-import { Skeleton } from "@/shared/ui/skeleton";
+import { SearchParams } from "@/shared/types/searchParams";
+import { Skeleton } from "@/shared/ui/core/skeleton";
+import { AppSearch } from "@/shared/ui/kit/AppSearch";
 import { CreateRepoButton, RepoFilters, RepoListContainer } from "@/features/repo";
 
 import { RepoCardSkeleton } from "@/entities/repo";
@@ -12,14 +13,7 @@ export const metadata: Metadata = {
 };
 
 type Props = {
-  searchParams: Promise<{
-    page?: string;
-    search?: string;
-    status?: string;
-    visibility?: string;
-    sortBy?: string;
-    sortOrder?: string;
-  }>;
+  searchParams: Promise<SearchParams>;
 };
 
 export default async function RepoPage({ searchParams }: Props) {

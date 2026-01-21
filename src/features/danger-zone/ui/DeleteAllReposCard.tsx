@@ -1,4 +1,4 @@
-import { Card, CardDescription, CardHeader, CardTitle } from "@/shared/ui/card";
+import { Card, CardDescription, CardHeader, CardTitle } from "@/shared/ui/core/card";
 
 import { api } from "@/server/trpc/server";
 import { DeleteAllReposDialog } from "./DeleteAllReposDialog";

@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 
-import { Particles } from "@/shared/ui/particles";
 import {
   AnalyticsSection,
   BrandsSection,
@@ -23,7 +22,7 @@ export const metadata: Metadata = {
 export default async function LandingPage() {
   return (
     <div className="bg-landing-bg-dark relative min-h-screen w-full overflow-hidden">
-      <Particles className="fixed inset-0 h-full w-full" />
+      {/* <Particles className="fixed inset-0 h-full w-full" /> */}
       <HeroSection />
       <BrandsSection />
       <HowItWorksSection />

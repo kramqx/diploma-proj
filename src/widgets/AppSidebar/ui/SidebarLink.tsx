@@ -7,7 +7,7 @@ import { SquareArrowOutUpRight } from "lucide-react";
 
 import { cn } from "@/shared/lib/utils";
 import { MenuItem } from "@/shared/types/menuItem";
-import { SidebarMenuButton } from "@/shared/ui/sidebar";
+import { SidebarMenuButton } from "@/shared/ui/core/sidebar";
 
 export function SidebarLink({ href, label: title, icon: Icon, isBlank, exact }: MenuItem) {
   const pathname = usePathname() ?? "";

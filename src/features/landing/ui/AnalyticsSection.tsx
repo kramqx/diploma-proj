@@ -2,8 +2,13 @@
 
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/ui/card";
-import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/shared/ui/chart";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/ui/core/card";
+import {
+  ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/shared/ui/core/chart";
 
 const chartData = [
   { month: "Jan", complexity: 186, docs: 80 },
@@ -17,11 +22,11 @@ const chartData = [
 const chartConfig = {
   complexity: {
     label: "Complexity",
-    color: "hsl(var(--chart-1))",
+    color: "var(--chart-1)",
   },
   docs: {
     label: "Docs Coverage",
-    color: "hsl(var(--chart-2))",
+    color: "var(--chart-2)",
   },
 } satisfies ChartConfig;
 
@@ -83,14 +88,12 @@ export function AnalyticsSection() {
                   type="natural"
                   fill="url(#fillDocs)"
                   stroke="var(--color-docs)"
-                  stackId="a"
                 />
                 <Area
                   dataKey="complexity"
                   type="natural"
                   fill="url(#fillComplexity)"
                   stroke="var(--color-complexity)"
-                  stackId="a"
                 />
               </AreaChart>
             </ChartContainer>

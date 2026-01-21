@@ -6,8 +6,7 @@ import { AlertTriangle, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { trpc } from "@/shared/api/trpc";
-import { AppTooltip } from "@/shared/ui/AppTooltip";
-import { Button } from "@/shared/ui/button";
+import { Button } from "@/shared/ui/core/button";
 import {
   Dialog,
   DialogClose,
@@ -17,8 +16,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/shared/ui/dialog";
-import { LoadingButton } from "@/shared/ui/LoadingButton";
+} from "@/shared/ui/core/dialog";
+import { AppTooltip } from "@/shared/ui/kit/AppTooltip";
+import { LoadingButton } from "@/shared/ui/kit/LoadingButton";
 
 import { UiApiKey } from "@/entities/api-keys";
 

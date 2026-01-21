@@ -2,7 +2,7 @@
 
 import { trpc } from "@/shared/api/trpc";
 import { cn } from "@/shared/lib/utils";
-import { Button } from "@/shared/ui/button";
+import { Button } from "@/shared/ui/core/button";
 
 export function SystemStatus() {
   const { data, isError, isLoading } = trpc.health.check.useQuery(undefined, {

@@ -1,7 +1,7 @@
 import { Activity, Database, FileText, Globe, Lock, Terminal } from "lucide-react";
 
-import { BentoCard, BentoGrid } from "@/shared/ui/bento-grid";
-import { BorderBeam } from "@/shared/ui/border-beam";
+import { BentoCard, BentoGrid } from "@/shared/ui/visuals/bento-grid";
+import { BorderBeam } from "@/shared/ui/visuals/border-beam";
 
 export function FeaturesSection() {
   return (

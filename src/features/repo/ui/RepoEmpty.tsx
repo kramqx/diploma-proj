@@ -7,7 +7,7 @@ import {
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
-} from "@/shared/ui/empty";
+} from "@/shared/ui/core/empty";
 
 import { CreateRepoEmptyButton } from "./CreateRepoEmptyButton";
 

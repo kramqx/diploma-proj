@@ -4,8 +4,7 @@ import Link from "next/link";
 import { Menu } from "lucide-react";
 
 import { publicHeaderMenu } from "@/shared/constants/navigation";
-import { Button } from "@/shared/ui/button";
-import { Logo } from "@/shared/ui/Logo";
+import { Button } from "@/shared/ui/core/button";
 import {
   Sheet,
   SheetClose,
@@ -13,8 +12,9 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/shared/ui/sheet";
-import { Skeleton } from "@/shared/ui/skeleton";
+} from "@/shared/ui/core/sheet";
+import { Skeleton } from "@/shared/ui/core/skeleton";
+import { Logo } from "@/shared/ui/icons/Logo";
 
 import { HeaderAuthButton } from "./HeaderAuthButton";
 

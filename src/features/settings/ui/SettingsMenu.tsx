@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 
 import { settingsMenu } from "@/shared/constants/navigation";
 import { cn } from "@/shared/lib/utils";
-import { Button } from "@/shared/ui/button";
+import { Button } from "@/shared/ui/core/button";
 
 export function SettingsMenu() {
   const pathname = usePathname();

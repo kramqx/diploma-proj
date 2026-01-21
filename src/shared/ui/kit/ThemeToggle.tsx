@@ -5,9 +5,9 @@ import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 
 import { cn } from "@/shared/lib/utils";
-import { AppTooltip } from "@/shared/ui/AppTooltip";
-import { Button } from "@/shared/ui/button";
-import { Skeleton } from "@/shared/ui/skeleton";
+import { Button } from "@/shared/ui/core/button";
+import { Skeleton } from "@/shared/ui/core/skeleton";
+import { AppTooltip } from "@/shared/ui/kit/AppTooltip";
 
 type Props = {
   className?: string;

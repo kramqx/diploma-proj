@@ -2,8 +2,8 @@ import { Star } from "lucide-react";
 
 import { cn, formatFullDate, formatRelativeTime } from "@/shared/lib/utils";
 import { RepoItemFields } from "@/shared/types/repoItem";
-import { AppTooltip } from "@/shared/ui/AppTooltip";
-import { Button } from "@/shared/ui/button";
+import { Button } from "@/shared/ui/core/button";
+import { AppTooltip } from "@/shared/ui/kit/AppTooltip";
 
 import { getLanguageColor } from "@/entities/repo/model/language-colors";
 import { repoVisibilityConfig } from "@/entities/repo/model/repo-visibility";

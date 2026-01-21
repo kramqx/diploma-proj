@@ -1,5 +1,5 @@
-import { BackgroundBeamsWithCollision } from "@/shared/ui/background-beams-with-collision";
-import { ShimmerButton } from "@/shared/ui/shimmer-button";
+import { BackgroundBeamsWithCollision } from "@/shared/ui/visuals/background-beams-with-collision";
+import { ShimmerButton } from "@/shared/ui/visuals/shimmer-button";
 
 export function CTASection() {
   return (

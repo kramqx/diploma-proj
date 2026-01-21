@@ -1,7 +1,7 @@
 import { Status } from "@prisma/client";
 
 import { parseRepoSearchParams } from "@/shared/lib/search-params";
-import { AppPagination } from "@/shared/ui/AppPagination";
+import { AppPagination } from "@/shared/ui/kit/AppPagination";
 
 import { api } from "@/server/trpc/server";
 import { RepoList } from "./RepoList";

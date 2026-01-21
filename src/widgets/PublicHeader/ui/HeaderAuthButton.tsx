@@ -2,7 +2,7 @@ import Link from "next/link";
 import { MoveLeft } from "lucide-react";
 
 import { getServerAuthSession } from "@/shared/api/auth/authOptions";
-import { Button } from "@/shared/ui/button";
+import { Button } from "@/shared/ui/core/button";
 
 export async function HeaderAuthButton() {
   const session = await getServerAuthSession();

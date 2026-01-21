@@ -1,5 +1,5 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
-import { Skeleton } from "@/shared/ui/skeleton";
+import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/core/card";
+import { Skeleton } from "@/shared/ui/core/skeleton";
 
 export function ProfileSkeleton() {
   return (
