@@ -1,4 +1,3 @@
-import tsPlugin from "@typescript-eslint/eslint-plugin";
 import tsParser from "@typescript-eslint/parser";
 import nextVitals from "eslint-config-next/core-web-vitals";
 import nextTs from "eslint-config-next/typescript";
@@ -37,7 +36,6 @@ export default defineConfig([
     plugins: {
       react: reactPlugin,
       "react-hooks": reactHooksPlugin,
-      "@typescript-eslint": tsPlugin,
       "unused-imports": unusedImportsPlugin,
       prettier: prettierPlugin,
       unicorn,
