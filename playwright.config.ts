@@ -1,6 +1,6 @@
 import { defineConfig } from "@playwright/test";
 
-import { isCI } from "@/shared/constants/env";
+import { isCI } from "./src/shared/constants/env";
 
 export default defineConfig({
   testDir: "src/tests/e2e",
