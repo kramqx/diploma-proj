@@ -34,7 +34,7 @@ const createPinoLogger = () => {
 
 const pinoLogger = createPinoLogger();
 
-const axiomLogger = new Logger();
+const axiomLogger = isProd ? new Logger() : null;
 
 const withContext = (obj: LogPayload) => {
   const store = requestContext.getStore();
@@ -55,7 +55,7 @@ const withContext = (obj: LogPayload) => {
 export const logger = {
   info: (payload: LogPayload) => {
     const data = withContext(payload);
-    if (isProd) {
+    if (isProd && axiomLogger) {
       axiomLogger.info(data.msg, data);
     } else {
       const { msg, ...rest } = data;
@@ -64,7 +64,7 @@ export const logger = {
   },
   error: (payload: LogPayload) => {
     const data = withContext(payload);
-    if (isProd) {
+    if (isProd && axiomLogger) {
       axiomLogger.error(data.msg, data);
     } else {
       const { msg, ...rest } = data;
@@ -73,7 +73,7 @@ export const logger = {
   },
   warn: (payload: LogPayload) => {
     const data = withContext(payload);
-    if (isProd) {
+    if (isProd && axiomLogger) {
       axiomLogger.warn(data.msg, data);
     } else {
       const { msg, ...rest } = data;
@@ -82,7 +82,7 @@ export const logger = {
   },
   debug: (payload: LogPayload) => {
     const data = withContext(payload);
-    if (isProd) {
+    if (isProd && axiomLogger) {
       axiomLogger.debug(data.msg, data);
     } else {
       const { msg, ...rest } = data;
@@ -90,6 +90,6 @@ export const logger = {
     }
   },
   flush: async () => {
-    if (isProd) await axiomLogger.flush();
+    if (isProd && axiomLogger) await axiomLogger.flush();
   },
 };
